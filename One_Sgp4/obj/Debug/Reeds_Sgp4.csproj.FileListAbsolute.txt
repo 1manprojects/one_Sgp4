@@ -1,0 +1,5 @@
+D:\Programmieren\git\Reeds_Sgp4\Reeds_Sgp4\obj\Debug\Reeds_Sgp4.csprojResolveAssemblyReference.cache
+D:\Programmieren\git\Reeds_Sgp4\Reeds_Sgp4\bin\Debug\Reeds_Sgp4.dll
+D:\Programmieren\git\Reeds_Sgp4\Reeds_Sgp4\bin\Debug\Reeds_Sgp4.pdb
+D:\Programmieren\git\Reeds_Sgp4\Reeds_Sgp4\obj\Debug\Reeds_Sgp4.dll
+D:\Programmieren\git\Reeds_Sgp4\Reeds_Sgp4\obj\Debug\Reeds_Sgp4.pdb

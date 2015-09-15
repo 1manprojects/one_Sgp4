@@ -1,0 +1,5 @@
+D:\Programmieren\git\onesgp4\One_Sgp4\bin\Debug\One_Sgp4.dll
+D:\Programmieren\git\onesgp4\One_Sgp4\bin\Debug\One_Sgp4.pdb
+D:\Programmieren\git\onesgp4\One_Sgp4\obj\Debug\One_Sgp4.csprojResolveAssemblyReference.cache
+D:\Programmieren\git\onesgp4\One_Sgp4\obj\Debug\One_Sgp4.dll
+D:\Programmieren\git\onesgp4\One_Sgp4\obj\Debug\One_Sgp4.pdb
