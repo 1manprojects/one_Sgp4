@@ -134,17 +134,56 @@ namespace One_Sgp4
 
             int zeros = Convert.ToInt32(line1[5 + noID].Substring(line1[5].Length - 1));
             line1[5 + noID] = line1[5 + noID].Substring(0, line1[5 + noID].IndexOf('-'));
-            line1[5 + noID] = line1[5 + noID].Insert(0, ".");
-            for (int i = 0; i < zeros; i++ )
-                line1[5 + noID] = line1[5 + noID].Insert(1, "0");
-            secondMeanMotion = double.Parse(line1[5 + noID], CultureInfo.GetCultureInfo("en-US"));
+            if (line1[5 + noID].Length > 0)
+            {
+                if (line1[5 + noID][0] == '+' || line1[5 + noID][0] == '-')
+                {
+                    line1[5 + noID] = line1[5 + noID].Insert(1, ".");
+                    for (int i = 0; i < zeros; i++)
+                        line1[5 + noID] = line1[5 + noID].Insert(2, "0");
+                }
+                else
+                {
+                    line1[5 + noID] = line1[5 + noID].Insert(0, ".");
+                    for (int i = 0; i < zeros; i++)
+                        line1[5 + noID] = line1[5 + noID].Insert(1, "0");
+                }
+                secondMeanMotion = double.Parse(line1[5 + noID], CultureInfo.GetCultureInfo("en-US"));
+            }
+            else
+            {
+                secondMeanMotion = 0.0;
+            }
 
             zeros = Convert.ToInt32(line1[6 + noID].Substring(line1[6 + noID].Length - 1));
-            line1[6 + noID] = line1[6 + noID].Substring(0, line1[6 + noID].IndexOf('-'));
-            line1[6 + noID] = line1[6 + noID].Insert(0, ".");
-            for (int i = 0; i < zeros; i++)
-                line1[6 + noID] = line1[6 + noID].Insert(1, "0");
-            dragTerm = double.Parse(line1[6 + noID], CultureInfo.GetCultureInfo("en-US"));
+            if (line1[6 + noID][line1[6 + noID].Length - 2] == '-')
+            {
+                line1[6 + noID] = line1[6 + noID].Substring(0, line1[6 + noID].IndexOf('-'));
+            }
+            else
+            {
+                line1[6 + noID] = line1[6 + noID].Substring(0, line1[6 + noID].IndexOf('+'));
+            }
+            if (line1[6 + noID].Length > 0)
+            {
+                if (line1[6 + noID][0] == '+' || line1[6 + noID][0] == '-')
+                {
+                    line1[6 + noID] = line1[6 + noID].Insert(1, ".");
+                    for (int i = 0; i < zeros; i++)
+                        line1[6 + noID] = line1[6 + noID].Insert(2, "0");
+                }
+                else
+                {
+                    line1[6 + noID] = line1[6 + noID].Insert(0, ".");
+                    for (int i = 0; i < zeros; i++)
+                        line1[6 + noID] = line1[6 + noID].Insert(1, "0");
+                }
+                dragTerm = double.Parse(line1[6 + noID], CultureInfo.GetCultureInfo("en-US"));
+            }
+            else
+            {
+                dragTerm = 0.0;
+            }
 
             ephemeris = double.Parse(line1[7 + noID], CultureInfo.GetCultureInfo("en-US"));
 

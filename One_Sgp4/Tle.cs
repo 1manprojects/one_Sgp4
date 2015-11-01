@@ -381,7 +381,7 @@ namespace One_Sgp4
         /*!
         \returns double relevationNumber
         */
-        public double getRelevatioNumber()
+        public double getRelevationNumber()
         {
             return relevationNumber;
         }
