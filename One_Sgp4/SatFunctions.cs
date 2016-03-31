@@ -25,20 +25,25 @@ namespace One_Sgp4
     /**
     * \brief InView Class definition.
     *
-    * This class calculates the contact windows and/or the Spherical Coordinates
-    * for each satellite to every groundstation.
-    * For this the position vector of the satellite and the
+    * This class calculates the visibitly of the satellite to a coordinate,
+    * the Spherical Coordinates and Satellite Sub-Points for the selected satelitte
+    * For this the position vector of the satellite the time and
     * coordinates of the groundstation need to be available. From the starting
     * time of the orbit calculation the azimuth, elevation and range to the
-    * ground station are calculated and if the satellite is in view a new
-    * ContactWindow will be created.  
+    * ground station are calculated and if the satellite is in view at given
+    * time it will return true. 
     */
+
     class calculateContacts
     {
         public const double pi = Math.PI; //!< double constant Pi
         public const double twoPi = pi * 2.0; //!< double constant two Pi
         public const double toDegrees = 180.0 / pi; //!< double constant conversion to degree
         public const double toRadians = pi / 180.0; //!< double constant converstion to radians
+
+        private const double a_Wgs72 = 6378.135; //!< double WGS72 const in Km
+        private const double a_Wgs84 = 6378.137; //!< double WGS84 const in Km
+        private const double f = 1.0 / 298.26;
 
         //! Ground constructor.
         /*!
@@ -49,7 +54,7 @@ namespace One_Sgp4
 
         }
 
-        //! Calculate ContactWindows for satellite and groundstations
+        //! Calculate visibility of a satellite from a point on Earth
         /*!
             \param Station to calcuate if satellite is in View
             \param TimeDate start time
@@ -58,7 +63,7 @@ namespace One_Sgp4
             \param double tick in witch time is increased by each step
             \return true if object is visible at given time and current location
         */
-        public static bool calcContactWindows(Coordinate coordinate, 
+        public static bool isSatVisible(Coordinate coordinate, 
             double minElevation, EpochTime time, Sgp4Data satPosData)
         {
 
@@ -110,12 +115,11 @@ namespace One_Sgp4
         }
 
         //! Calculate Range, Azimuth and elevation for satellite
+        //! for given time point and satellite position
         /*!
             \param Station to calcuate if satellite is in View
             \param TimeDate start time
             \param List<Sgp4Data> satellite position vector
-            \param string name of the satellite
-            \param double tick in witch time is increased by each step
             \return Point3d containing range, azimuth, elevation
         */
         public static Point3d calcSphericalCoordinate(Coordinate coordinate,
@@ -161,6 +165,54 @@ namespace One_Sgp4
             }
 
             return result;
+        }
+
+        //! Calculate Latitude, longitude and height for satellite on Earth
+        //! at given time point and position of the satellite
+        /*!
+            \param TimeDate start time
+            \param List<Sgp4Data> satellite position vector
+            \param int WGS-Data to use 0 = WGS_72; 1 = WGS_84
+            \param int Nr of iterations used to calculate the latetude
+            \return Coordinate containing longitude, latitude, altitude/height
+        */
+        public static Coordinate calcSatSubPoint(EpochTime time, Sgp4Data satPosData,
+            int wgsID = 0, int nrOfIterations = 3)
+        {
+            //calculate Longitude
+            double longitude = Math.Atan(satPosData.getY() / satPosData.getX())
+                - time.getLocalSiderealTime();
+
+            //standard WGS_72
+            double _a = a_Wgs72;
+            if (wgsID == 1)
+            {
+                _a = a_Wgs84;
+            }
+
+            //calculate latetude for oblate Earth
+            double latetude = Math.Atan((satPosData.getZ() /
+                (Math.Sqrt( (satPosData.getX() * satPosData.getX() )
+                + (satPosData.getY() * satPosData.getY()) ))));
+
+            double _R = satPosData.getZ() / Math.Tan(latetude);
+            double _c = 1.0 / (Math.Sqrt(1.0 - (Math.E * Math.E *
+                    Math.Sin(latetude) * Math.Sin(latetude))));
+
+            for (int i = 0; i < nrOfIterations; i++)
+            {
+                double latI = latetude;
+                _c = 1.0 / (Math.Sqrt(1.0 - (Math.E * Math.E *
+                    Math.Sin(latI) * Math.Sin(latI))));
+
+                latetude = Math.Atan((satPosData.getZ() + _a * _c * Math.E *
+                    Math.E * Math.Sin(latI)) / _R);
+            }
+
+            //calculate altitude for oblate Earth
+            double altitude = (_R / Math.Cos(latetude)) - (_a * _c);
+
+            return new Coordinate(latetude, longitude, altitude);
         }
 
     }

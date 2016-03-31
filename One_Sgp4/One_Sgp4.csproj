@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContactWindow.cs" />
+    <Compile Include="SatFunctions.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="DeepSpaceObjects.cs" />
     <Compile Include="Enum.cs" />
