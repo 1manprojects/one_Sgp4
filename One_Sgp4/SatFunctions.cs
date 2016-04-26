@@ -34,7 +34,7 @@ namespace One_Sgp4
     * time it will return true. 
     */
 
-    class calculateContacts
+    public class SatFunctions
     {
         public const double pi = Math.PI; //!< double constant Pi
         public const double twoPi = pi * 2.0; //!< double constant two Pi
@@ -49,7 +49,7 @@ namespace One_Sgp4
         /*!
             Empty constructor
         */
-        public calculateContacts()
+        public SatFunctions()
         {
 
         }

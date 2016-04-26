@@ -28,7 +28,7 @@ namespace One_Sgp4
    * This class defnies the GeoCoordinates of Latetude, Longitude, hight and the
    * conversions to Earth Centerd Inertial.
    */
-    class Coordinate
+    public class Coordinate
     {
         public const double pi = Math.PI; //!< double constant Pi
         public const double twoPi = pi * 2.0; //!< double constant two Pi

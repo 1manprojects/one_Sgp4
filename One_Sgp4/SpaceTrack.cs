@@ -26,7 +26,7 @@ using System.Collections.Specialized;
 
 namespace One_Sgp4
 {
-    class WebTleLoader
+    public class SpaceTrack
     {
         //***************************************************************************
         /*
