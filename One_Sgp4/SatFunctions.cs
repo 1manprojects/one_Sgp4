@@ -167,6 +167,42 @@ namespace One_Sgp4
             return result;
         }
 
+
+        //! Calculate ArcTan(x/y) with correct result for
+        //! cacluation of Sattelite subPoint
+        /*!
+            \param double x
+            \param double y
+            \return double ArcTan(x/y)
+        */
+        private static double AcTan(double x, double y)
+        {
+            double res;
+            if (y == 0.0)
+            {
+                if (x > 0.0)
+                {
+                    res = Math.PI / 2.0;
+                }
+                else
+                {
+                    res = 3.0 * Math.PI / 2.0;
+                }
+            }
+            else
+            {
+                if (y > 0.0)
+                {
+                    res = Math.Atan(x / y);
+                }
+                else
+                {
+                    res = Math.PI + Math.Atan(x / y);
+                }
+            }
+            return res;
+        }
+
         //! Calculate Latitude, longitude and height for satellite on Earth
         //! at given time point and position of the satellite
         /*!
@@ -177,42 +213,23 @@ namespace One_Sgp4
             \return Coordinate containing longitude, latitude, altitude/height
         */
         public static Coordinate calcSatSubPoint(EpochTime time, Sgp4Data satPosData,
-            int wgsID = 0, int nrOfIterations = 3)
+            int wgsID = 0)
         {
-            //calculate Longitude
-            double longitude = Math.Atan(satPosData.getY() / satPosData.getX())
-                - time.getLocalSiderealTime();
+            double sat_X = satPosData.getX();
+            double sat_Y = satPosData.getY();
+            double sat_Z = satPosData.getZ();
 
-            //standard WGS_72
-            double _a = a_Wgs72;
-            if (wgsID == 1)
-            {
-                _a = a_Wgs84;
-            }
+            //calculat Longitude
+            double latitude = Math.Atan((sat_Z / (Math.Sqrt(
+                                sat_X * sat_X + sat_Y * sat_Y))));
 
-            //calculate latetude for oblate Earth
-            double latetude = Math.Atan((satPosData.getZ() /
-                (Math.Sqrt( (satPosData.getX() * satPosData.getX() )
-                + (satPosData.getY() * satPosData.getY()) ))));
+            double longitude = AcTan(sat_Y, sat_X) - time.getLocalSiderealTime();
+            double height = Math.Sqrt(sat_X * sat_X + sat_Y * sat_Y + sat_Z * sat_Z) - 6378.135;
 
-            double _R = satPosData.getZ() / Math.Tan(latetude);
-            double _c = 1.0 / (Math.Sqrt(1.0 - (Math.E * Math.E *
-                    Math.Sin(latetude) * Math.Sin(latetude))));
+            latitude = toDegrees * latitude;
+            longitude = toDegrees * longitude;
 
-            for (int i = 0; i < nrOfIterations; i++)
-            {
-                double latI = latetude;
-                _c = 1.0 / (Math.Sqrt(1.0 - (Math.E * Math.E *
-                    Math.Sin(latI) * Math.Sin(latI))));
-
-                latetude = Math.Atan((satPosData.getZ() + _a * _c * Math.E *
-                    Math.E * Math.Sin(latI)) / _R);
-            }
-
-            //calculate altitude for oblate Earth
-            double altitude = (_R / Math.Cos(latetude)) - (_a * _c);
-
-            return new Coordinate(latetude, longitude, altitude);
+            return new Coordinate(latitude, longitude, height);
         }
 
     }
