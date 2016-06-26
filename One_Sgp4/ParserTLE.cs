@@ -250,6 +250,10 @@ namespace One_Sgp4
             {
                 tleName = startYear + startNumber + intDes;
             }
+            if (tleName[0] == '0' && tleName[1] == ' ')
+            {
+                tleName = tleName.Remove(0, 2);
+            }
 
             Tle ret = new Tle(tleName, noradId, (Enum.satClass)satCl, startYear, startNumber, intDes,
                 epochYear, epochDay, firstMeanMotion, secondMeanMotion, dragTerm,
