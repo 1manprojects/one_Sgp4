@@ -8,3 +8,5 @@ This library was created since I could not find a c# library with the necessary 
 
 ## Download
 Download the latest dll file [here](https://github.com/1manprojects/one_Sgp4/releases) and import it into youre project.
+
+**License:** [GNU LESSER GENERAL PUBLIC LICENSE Version 3](https://github.com/1manprojects/one_Sgp4/blob/master/LICENSE)
