@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Nikolai Reed <reed@1manprojects.de>
+ * Copyright 2017 Nikolai Reed <reed@1manprojects.de>
  *
  * Licensed under the GNU Lesser General Public License v3 (LGPL-3)
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace One_Sgp4
 {

@@ -29,3 +29,5 @@
 
 # Debug files
 *.dSYM/
+
+DoxyGen/
