@@ -53,4 +53,4 @@ resultDataList = sgp4Propagator.getRestults();
 ```
 
 
-**License:** [GNU LESSER GENERAL PUBLIC LICENSE Version 3](https://github.com/1manprojects/one_Sgp4/blob/master/LICENSE)
+**License:** MIT
