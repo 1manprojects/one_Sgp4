@@ -1,0 +1,8 @@
+D:\Programmieren\git\one_Sgp4\One_Sgp4\bin\Debug\net40\One_Sgp4.dll
+D:\Programmieren\git\one_Sgp4\One_Sgp4\bin\Debug\net40\One_Sgp4.pdb
+D:\Programmieren\git\one_Sgp4\One_Sgp4\obj\Debug\net40\One_Sgp4.csprojResolveAssemblyReference.cache
+D:\Programmieren\git\one_Sgp4\One_Sgp4\obj\Debug\net40\One_Sgp4.csproj.CoreCompileInputs.cache
+D:\Programmieren\git\one_Sgp4\One_Sgp4\obj\Debug\net40\One_Sgp4.AssemblyInfoInputs.cache
+D:\Programmieren\git\one_Sgp4\One_Sgp4\obj\Debug\net40\One_Sgp4.AssemblyInfo.cs
+D:\Programmieren\git\one_Sgp4\One_Sgp4\obj\Debug\net40\One_Sgp4.dll
+D:\Programmieren\git\one_Sgp4\One_Sgp4\obj\Debug\net40\One_Sgp4.pdb

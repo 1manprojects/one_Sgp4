@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "One_Sgp4", "One_Sgp4\One_Sgp4.csproj", "{93AE6E32-FFEC-4F1A-980A-206657F880E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "One_Sgp4", "One_Sgp4\One_Sgp4.csproj", "{1EC74942-0D9A-450E-B396-6009F9292072}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,12 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{93AE6E32-FFEC-4F1A-980A-206657F880E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{93AE6E32-FFEC-4F1A-980A-206657F880E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{93AE6E32-FFEC-4F1A-980A-206657F880E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{93AE6E32-FFEC-4F1A-980A-206657F880E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EC74942-0D9A-450E-B396-6009F9292072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EC74942-0D9A-450E-B396-6009F9292072}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EC74942-0D9A-450E-B396-6009F9292072}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EC74942-0D9A-450E-B396-6009F9292072}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2574E9F0-75F8-482C-B75C-0276A02EFB02}
 	EndGlobalSection
 EndGlobal

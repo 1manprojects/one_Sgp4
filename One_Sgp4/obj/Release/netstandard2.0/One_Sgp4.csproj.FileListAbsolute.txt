@@ -1,0 +1,9 @@
+C:\Users\Reed\source\repos\One_Sgp4\One_Sgp4\bin\Release\netstandard2.0\One_Sgp4.deps.json
+C:\Users\Reed\source\repos\One_Sgp4\One_Sgp4\bin\Release\netstandard2.0\One_Sgp4.dll
+C:\Users\Reed\source\repos\One_Sgp4\One_Sgp4\bin\Release\netstandard2.0\One_Sgp4.pdb
+C:\Users\Reed\source\repos\One_Sgp4\One_Sgp4\obj\Release\netstandard2.0\One_Sgp4.csprojResolveAssemblyReference.cache
+C:\Users\Reed\source\repos\One_Sgp4\One_Sgp4\obj\Release\netstandard2.0\One_Sgp4.csproj.CoreCompileInputs.cache
+C:\Users\Reed\source\repos\One_Sgp4\One_Sgp4\obj\Release\netstandard2.0\One_Sgp4.AssemblyInfoInputs.cache
+C:\Users\Reed\source\repos\One_Sgp4\One_Sgp4\obj\Release\netstandard2.0\One_Sgp4.AssemblyInfo.cs
+C:\Users\Reed\source\repos\One_Sgp4\One_Sgp4\obj\Release\netstandard2.0\One_Sgp4.dll
+C:\Users\Reed\source\repos\One_Sgp4\One_Sgp4\obj\Release\netstandard2.0\One_Sgp4.pdb

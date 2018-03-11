@@ -1,4 +1,0 @@
-E:\Programieren\git\one_Sgp4\One_Sgp4\bin\Release\One_Sgp4.dll
-E:\Programieren\git\one_Sgp4\One_Sgp4\bin\Release\One_Sgp4.pdb
-E:\Programieren\git\one_Sgp4\One_Sgp4\obj\Release\One_Sgp4.dll
-E:\Programieren\git\one_Sgp4\One_Sgp4\obj\Release\One_Sgp4.pdb

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>One_Sgp4</id>
+    <version>1.0.1</version>
+    <authors>Reed</authors>
+    <owners>Reed</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://tldrlegal.com/license/mit-license#fulltext</licenseUrl>
+    <projectUrl>https://github.com/1manprojects/one_Sgp4</projectUrl>
+    <description>This library calculates the orbits of satellites via TLEs data from the web. Other functions for coordination transformation, time calculations and the calculation of contact windows depending on the observers coordinates on earth are also available.</description>
+    <releaseNotes>Included Net 4.0 and Net 4.5 as TargetFrameworks</releaseNotes>
+    <copyright>The MIT License (MIT)</copyright>
+    <tags>SGP4 Orbit Prediction Satellite</tags>
+    <repository url="https://github.com/1manprojects/one_Sgp4" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.0" />
+      <group targetFramework=".NETFramework4.5" />
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\Reed\source\repos\One_Sgp4\One_Sgp4\bin\Release\net40\One_Sgp4.dll" target="lib\net40\One_Sgp4.dll" />
+    <file src="C:\Users\Reed\source\repos\One_Sgp4\One_Sgp4\bin\Release\net45\One_Sgp4.dll" target="lib\net45\One_Sgp4.dll" />
+    <file src="C:\Users\Reed\source\repos\One_Sgp4\One_Sgp4\bin\Release\netstandard2.0\One_Sgp4.dll" target="lib\netstandard2.0\One_Sgp4.dll" />
+  </files>
+</package>
