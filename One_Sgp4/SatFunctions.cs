@@ -42,6 +42,8 @@ namespace One_Sgp4
         private const double a_Wgs72 = 6378.135; //!< double WGS72 const in Km
         private const double a_Wgs84 = 6378.137; //!< double WGS84 const in Km
         private const double f = 1.0 / 298.26;
+        private const double delta = 1.0e-07;
+        private const double f_2 = (f * (2.0 - f)) * (f * (2.0 - f));
 
         //! Ground constructor.
         /*!
@@ -180,11 +182,11 @@ namespace One_Sgp4
             {
                 if (x > 0.0)
                 {
-                    res = Math.PI / 2.0;
+                    res = pi / 2.0;
                 }
                 else
                 {
-                    res = 3.0 * Math.PI / 2.0;
+                    res = 3.0 * pi / 2.0;
                 }
             }
             else
@@ -195,7 +197,7 @@ namespace One_Sgp4
                 }
                 else
                 {
-                    res = Math.PI + Math.Atan(x / y);
+                    res = pi + Math.Atan(x / y);
                 }
             }
             return res;
@@ -217,12 +219,23 @@ namespace One_Sgp4
             double sat_Y = satPosData.getY();
             double sat_Z = satPosData.getZ();
 
-            //calculat Longitude
-            double latitude = Math.Atan((sat_Z / (Math.Sqrt(
-                                sat_X * sat_X + sat_Y * sat_Y))));
+
+            double r = Math.Sqrt( (sat_X * sat_X) + (sat_Y * sat_Y) );
+            double latitude = AcTan(sat_Z , r);
+            double phi;
+            double c;
+            do
+            {
+                phi = latitude;
+                double c_sin2 = Math.Sin(phi) * Math.Sin(phi);
+                c = 1.0 / Math.Sqrt(1.0 - (f_2 * c_sin2));
+                latitude = AcTan(sat_Z + (6378.135 * c * f_2 * Math.Sin(phi)), r);
+            }
+            while (Math.Abs( latitude - phi) > delta);
 
             double longitude = AcTan(sat_Y, sat_X) - time.getLocalSiderealTime();
-            double height = Math.Sqrt(sat_X * sat_X + sat_Y * sat_Y + sat_Z * sat_Z) - 6378.135;
+            
+            double height = (r / Math.Cos(latitude)) - 6378.135 * c;
 
             latitude = toDegrees * latitude;
             longitude = toDegrees * longitude;

@@ -101,17 +101,18 @@ namespace One_Sgp4
         */
         public Point3d toECI(double siderealTime)
         {
-            double srt = siderealTime;
+            double srt = siderealTime + (toRadians * longitude);
             double lat_rad = toRadians * latetude;
             Point3d eciPos = new Point3d();
 
-            double c = 1.0 / Math.Sqrt(1.0 + f * (f - 2.0) *
-                       (Math.Sin(lat_rad) * Math.Sin(lat_rad)));
+            double c = 1.0 / (Math.Sqrt(1.0 + f * (f - 2.0) *
+                       (Math.Sin(lat_rad) * Math.Sin(lat_rad))));
+
             double s = (1.0 - f) * (1.0 - f) * c;
             eciPos.x = a_Wgs72 * c * Math.Cos(lat_rad) * Math.Cos(srt);
             eciPos.y = a_Wgs72 * c * Math.Cos(lat_rad) * Math.Sin(srt);
             eciPos.z = a_Wgs72 * s * Math.Sin(lat_rad);
-
+            
             return eciPos;
         }
 
