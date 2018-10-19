@@ -19,7 +19,8 @@ Install-Package One_Sgp4 -Version 1.0.1
 Download the latest dll file [here](https://github.com/1manprojects/one_Sgp4/releases) and import it into youre project.
 
 ## Usage
-After Importing the DLL into your project create a TLE element
+A more complete Example can be found in the OneSGP4_Example Project.
+
 
 Example TLE for ISS:
 ```
@@ -30,9 +31,10 @@ Example TLE for ISS:
 This is can be done using the parser or creating a new TLE element Manually
 The Parser can be given the TLE lines as a string
 ```
-Tle tleIem = ParserTLE.parseTle("0 UME 1 (ISS 1)",
-  "1  8709U 76019A   17083.91463156 +.00000030 +00000-0 +91115-4 0  9995",
-  "2  8709 069.6748 319.8382 0011306 339.5223 102.9699 13.71383337054833")
+Tle tleItem = ParserTLE.parseTle(
+                "1  8709U 76019A   17083.91463156 +.00000030 +00000-0 +91115-4 0  9995",
+                "2  8709 069.6748 319.8382 0011306 339.5223 102.9699 13.71383337054833",
+                "ISS 1");
 ```
 or one can give a txt-file containing a large list of TLE-Data
 ```
