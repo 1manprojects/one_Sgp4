@@ -220,7 +220,7 @@ namespace One_Sgp4
             time = (time - hour) * 60.0;
             int min = Convert.ToInt32(Math.Floor(time));
             int sec = Convert.ToInt32 ((time - min) * 60.0 );
-            string date = Convert.ToString(hour) + ":" +
+            string date = getDay() + "." + getMonth() + "." + getYear() + "-" + Convert.ToString(hour) + ":" +
                           Convert.ToString(min) + ":" +
                           Convert.ToString(sec);
             return date;

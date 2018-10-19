@@ -219,6 +219,10 @@ namespace One_Sgp4
             double sat_Y = satPosData.getY();
             double sat_Z = satPosData.getZ();
 
+            double wgs_R = a_Wgs72;
+            if (wgsID == 1)
+                wgs_R = a_Wgs84;
+
 
             double r = Math.Sqrt( (sat_X * sat_X) + (sat_Y * sat_Y) );
             double latitude = AcTan(sat_Z , r);
@@ -229,13 +233,13 @@ namespace One_Sgp4
                 phi = latitude;
                 double c_sin2 = Math.Sin(phi) * Math.Sin(phi);
                 c = 1.0 / Math.Sqrt(1.0 - (f_2 * c_sin2));
-                latitude = AcTan(sat_Z + (6378.135 * c * f_2 * Math.Sin(phi)), r);
+                latitude = AcTan(sat_Z + (wgs_R * c * f_2 * Math.Sin(phi)), r);
             }
             while (Math.Abs( latitude - phi) > delta);
 
             double longitude = AcTan(sat_Y, sat_X) - time.getLocalSiderealTime();
             
-            double height = (r / Math.Cos(latitude)) - 6378.135 * c;
+            double height = (r / Math.Cos(latitude)) - wgs_R * c;
 
             latitude = toDegrees * latitude;
             longitude = toDegrees * longitude;
