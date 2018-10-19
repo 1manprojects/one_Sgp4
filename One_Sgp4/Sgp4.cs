@@ -97,15 +97,21 @@ namespace One_Sgp4
             SECRET = 2 //!< int 2 secret satellite
         };
 
+        public enum wgsConstant
+        {
+            WGS_72 = 0, //!< int 0 WGS constant 72
+            WGS_84 = 1 //!< int 0 WGS constant 84
+        }
+
         //! SGP4 constructor.
         /*!
         \param tle Two Line Elements
         \param int GravConst 0 = WGS72, 1 = WGS82
         initializes the Orbit-Calculation model
         */
-        public Sgp4(Tle data, int wgsConstant)
+        public Sgp4(Tle data, wgsConstant wgs)
         {
-            setGrav(wgsConstant);
+            setGrav(wgs);
 
             tleElementData = data;
             satCalcData = new Sgp4Rec();
@@ -2016,11 +2022,11 @@ namespace One_Sgp4
             return resultOrbitData;
         }
 
-        public void setGrav(int select)
+        public void setGrav(wgsConstant wgs)
         {
-            switch (select)
+            switch (wgs)
             {
-                case 0:
+                case wgsConstant.WGS_72:
                     radiusEarthKm = WGS_72.radiusEarthKM;
                     mu = WGS_72.mu;
                     xke = 60.0 / Math.Sqrt(radiusEarthKm * radiusEarthKm * radiusEarthKm / mu);
@@ -2030,7 +2036,7 @@ namespace One_Sgp4
                     j4 = WGS_72.j4;
                     j3oj2 = j3 / j2;
                     break;
-                case 1:
+                case wgsConstant.WGS_84:
                     radiusEarthKm = WGS_84.radiusEarthKM;
                     mu = WGS_84.mu;
                     xke = 60.0 / Math.Sqrt(radiusEarthKm * radiusEarthKm * radiusEarthKm / mu);

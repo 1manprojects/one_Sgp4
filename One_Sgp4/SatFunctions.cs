@@ -213,14 +213,14 @@ namespace One_Sgp4
             \return Coordinate containing longitude, latitude, altitude/height
         */
         public static Coordinate calcSatSubPoint(EpochTime time, Sgp4Data satPosData,
-            int wgsID = 0)
+            One_Sgp4.Sgp4.wgsConstant wgs)
         {
             double sat_X = satPosData.getX();
             double sat_Y = satPosData.getY();
             double sat_Z = satPosData.getZ();
 
             double wgs_R = a_Wgs72;
-            if (wgsID == 1)
+            if (wgs == Sgp4.wgsConstant.WGS_84)
                 wgs_R = a_Wgs84;
 
 
