@@ -19,7 +19,7 @@ Install-Package One_Sgp4 -Version 1.0.1
 Download the latest dll file [here](https://github.com/1manprojects/one_Sgp4/releases) and import it into youre project.
 
 ## Usage
-A more complete Example can be found in the OneSGP4_Example Project.
+A more complete Example can be found in the [OneSGP4_Example Project](https://github.com/1manprojects/one_Sgp4/blob/master/OneSGP4_Example/Program.cs).
 
 
 Example TLE for ISS:
@@ -45,6 +45,14 @@ To calculate the Orbit positiont of the object in question the start and stop ti
 ```
 EpochTime startTime = new EpochTime(DateTime.UtcNow());
 EpochTime stopTime = new EpochTime(2017,100.5); (Year 2017, 100 day at 12:00 HH)
+//Add 15 Seconds to EpochTime
+anotherTime.addTick(15);
+//Add 20 Min to EpochTime
+anotherTime.addMinutes(20);
+//Add 1 hour to EpochTime
+anotherTime.addHours(1);
+//Add 2 Days to EpochTime
+anotherTime.addDays(2);
 ```
 The calculation are then done using the SGP4 class with the TLE-data and the WGS-Constant (1 = WGS84; 0 = WGS72) with WGS84 being standard. The propagator will calculate from the starting time to the defined end time. Each step of the calculation can be defined from up to minutes or even seconds and lower. The results can be then retrived containing the Positon (X,Y,Z) and its Velocity (X_dot, Y_dot, Z_dot)
 ```
@@ -53,6 +61,44 @@ sgp4Propagator.runSgp4Cal(startTime, stopTime, Double<calculation step in minute
 List<One_Sgp4.Sgp4Data> resultDataList = new List<Sgp4Data>();
 resultDataList = sgp4Propagator.getRestults();
 ```
+It is also possible to calculate the position of the Satellite at a single timepoint
+```
+Sgp4Data satellitePos = getSatPositionAtTime(satellite, epoch, wgs);
+```
 
+### Other Functions
+
+Furthermore it is possible to calculate if a satellite will be visible from the ground at a certain location and time. For this one has to set a location of the observer on earth.
+
+Coordinate of an observer on Ground latitude, longitude, height(in meters)
+```
+  One_Sgp4.Coordinate observer = new Coordinate(35.554595, 18.888574, 0);
+```
+Convert to ECI (Earth Centerd Inertial) coordinate system
+```
+  One_Sgp4.Point3d eci = observer.toECI(startTime.getLocalSiderealTime());
+```
+Get Local SiderealTime for Observer
+```
+  double localSiderealTime = startTime.getLocalSiderealTime(observer.getLongitude());
+```
+
+To Calculate the SubPoint of Satellite on ground
+```
+One_Sgp4.Coordinate satOnGround = One_Sgp4.SatFunctions.calcSatSubPoint(startTime, resultDataList[0], Sgp4.wgsConstant.WGS_84);
+```
+
+Check if a satellite is currently visible
+```
+bool satelliteIsVisible = One_Sgp4.SatFunctions.isSatVisible(observer, 0.0, startTime, satellitePos);
+```
+Calculate the Spherical Coordinates from an Observer to a Satelite. This will return a 3D-Point that contains the following information range from the point to the satellite in km, the Azimuth in radians and the Elevation in radians.
+```
+One_Sgp4.Point3d spherical = One_Sgp4.SatFunctions.calcSphericalCoordinate(observer, startTime, resultDataList[0]);
+```
+To Calculate the upcomming passes of the satellite for the next 5 days
+```
+List<Pass> passes = One_Sgp4.SatFunctions.CalculatePasses(observer, tleISS, new EpochTime(DateTime.UtcNow), 15, 5, Sgp4.wgsConstant.WGS_84);
+```
 
 **License:** MIT
