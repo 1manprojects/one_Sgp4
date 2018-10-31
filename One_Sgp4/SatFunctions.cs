@@ -17,6 +17,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace One_Sgp4
 {
@@ -247,6 +248,44 @@ namespace One_Sgp4
             return new Coordinate(latitude, longitude, height);
         }
 
+        public static Sgp4Data getSatPositionAtTime(Tle satellite, EpochTime atTime, Sgp4.wgsConstant wgs)
+        {
+            Sgp4 sgp4Propagator = new Sgp4(satellite, wgs);
+            sgp4Propagator.runSgp4Cal(atTime, atTime, 1 / 60.0);
+            return sgp4Propagator.getRestults()[0];
+        }
+
+
+        public static List<Pass> CalculatePasses(Coordinate position, Tle satellite, EpochTime startTime, int accuracy = 15,
+            int maxNumberOfDays = 5, Sgp4.wgsConstant wgs = Sgp4.wgsConstant.WGS_84)
+        {
+            List<Pass> results = new List<Pass>();
+            EpochTime epoch = new EpochTime(startTime);
+            EpochTime end = new EpochTime(startTime);
+            end.addDays(maxNumberOfDays);
+            while (epoch < end)
+            {
+                Sgp4Data satPos = getSatPositionAtTime(satellite, epoch, wgs);
+                if (SatFunctions.isSatVisible(position, 0.0, epoch, satPos))
+                {
+                    EpochTime passStart = new EpochTime(epoch);
+                    Point3d spherical = SatFunctions.calcSphericalCoordinate(position, epoch, satPos);
+                    double maxElevation = spherical.z;
+                    epoch.addTick(accuracy);
+                    satPos = getSatPositionAtTime(satellite, epoch, wgs);
+                    while (SatFunctions.isSatVisible(position, 0.0, epoch, satPos))
+                    {
+                        spherical = SatFunctions.calcSphericalCoordinate(position, epoch, satPos);
+                        if (maxElevation < spherical.z)
+                            maxElevation = spherical.z;
+                        epoch.addTick(accuracy);
+                    }
+                    results.Add(new One_Sgp4.Pass(position, passStart, new EpochTime(epoch), maxElevation * 180.0 / pi));
+                }
+                epoch.addTick(accuracy);
+            }
+            return results;            
+        }
     }
 }
 

@@ -20,7 +20,7 @@ using System;
 
 namespace One_Sgp4
 {
-    public class EpochTime
+    public class EpochTime : IComparable<EpochTime>
     {
         /**
       * \brief EpochTime class
@@ -126,7 +126,7 @@ namespace One_Sgp4
             {
                 year = epochYear;
             }
-            convertEpochToTime();
+            dayToDate(epochYear, EpochDay);
         }
 
         //! EpochTime constructor.
@@ -220,9 +220,9 @@ namespace One_Sgp4
             time = (time - hour) * 60.0;
             int min = Convert.ToInt32(Math.Floor(time));
             int sec = Convert.ToInt32 ((time - min) * 60.0 );
-            string date = getDay() + "." + getMonth() + "." + getYear() + "-" + Convert.ToString(hour) + ":" +
-                          Convert.ToString(min) + ":" +
-                          Convert.ToString(sec);
+            string date = getDay() + "." + getMonth().ToString("00") + "." + getYear() + "-" + hour.ToString("00") + ":" +
+                          min.ToString("00") + ":" +
+                          sec.ToString("00");
             return date;
         }
 
@@ -308,6 +308,21 @@ namespace One_Sgp4
                 year++;
             }
             convertEpochToTime();
+        }
+
+        public void addMinutes(double min)
+        {
+            this.addTick(min * 60.0);
+        }
+
+        public void addHours(double hour)
+        {
+            this.addMinutes(hour * 60.0);
+        }
+
+        public void addDays(double day)
+        {
+            this.addHours(day * 24.0);
         }
 
         //! returns the Time in Seconds of this object
@@ -412,6 +427,35 @@ namespace One_Sgp4
             double t = (hour + ((minutes + (seconds / 60.0)) / 60.0)) / 24.0;
             jd = jd + t;
             return jd;
+        }
+
+        public int CompareTo(EpochTime other)
+        {
+            if (other == null)
+                return 1;
+            if ( year == other.year)
+            {
+                if (epoch == other.epoch)
+                    return 0;
+                else if (epoch < other.epoch)
+                    return -1;
+                else
+                    return 1;
+            }
+            else if (year < other.year)
+                return -1;
+            else
+                return 1;
+        }
+
+        public static bool operator < (EpochTime e1, EpochTime e2)
+        {
+            return e1.CompareTo(e2) < 0;
+        }
+
+        public static bool operator >(EpochTime e1, EpochTime e2)
+        {
+            return e1.CompareTo(e2) < 0;
         }
 
     }

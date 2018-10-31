@@ -9,13 +9,16 @@ namespace OneSGP4_Example
         static void Main(string[] args)
         {
             //Parse three line element
-            Tle tleItem = ParserTLE.parseTle(
+            Tle tleISS = ParserTLE.parseTle(
                 "1  8709U 76019A   17083.91463156 +.00000030 +00000-0 +91115-4 0  9995",
                 "2  8709 069.6748 319.8382 0011306 339.5223 102.9699 13.71383337054833",
                 "ISS 1");
 
             //Parse tle from file
-            List<Tle> tleList = ParserTLE.ParseFile("tleData.txt");
+            if (System.IO.File.Exists("tleData.txt"))
+            {
+                List<Tle> tleList = ParserTLE.ParseFile("tleData.txt");
+            }
 
             //Get TLE from Space-Track.org
             //list of satellites by their NORAD ID
@@ -32,8 +35,19 @@ namespace OneSGP4_Example
             EpochTime anotherTime = new EpochTime(2018, 100.5); //(Year 2017, 100 day at 12:00 HH)
             EpochTime stopTime = new EpochTime(DateTime.UtcNow.AddHours(1));
 
+            //Add 15 Seconds to EpochTime
+            anotherTime.addTick(15);
+            //Add 20 Min to EpochTime
+            anotherTime.addMinutes(15);
+            //Add 1 hour to EpochTime
+            anotherTime.addHours(1);
+            //Add 2 Days to EpochTime
+            anotherTime.addDays(2);
+            Console.Out.WriteLine(anotherTime.ToString());
+
+
             //Calculate Satellite Position and Speed
-            One_Sgp4.Sgp4 sgp4Propagator = new Sgp4(tleItem, Sgp4.wgsConstant.WGS_84);
+            One_Sgp4.Sgp4 sgp4Propagator = new Sgp4(tleISS, Sgp4.wgsConstant.WGS_84);
             //set calculation parameters StartTime, EndTime and caclulation steps in minutes
             sgp4Propagator.runSgp4Cal(startTime, stopTime, 1 / 30.0); // 1/60 => caclulate sat points every 2 seconds
             List<One_Sgp4.Sgp4Data> resultDataList = new List<Sgp4Data>();
@@ -51,11 +65,20 @@ namespace OneSGP4_Example
             One_Sgp4.Coordinate satOnGround = One_Sgp4.SatFunctions.calcSatSubPoint(startTime, resultDataList[0], Sgp4.wgsConstant.WGS_84);
 
             //Calculate if Satellite is Visible for a certain Observer on ground at certain timePoint
-            Boolean satelliteIsVisible = One_Sgp4.SatFunctions.isSatVisible(observer, 0.0, startTime, resultDataList[0]);
+            bool satelliteIsVisible = One_Sgp4.SatFunctions.isSatVisible(observer, 0.0, startTime, resultDataList[0]);
 
             //Calculate Sperical Coordinates from an Observer to Satellite
             //returns 3D-Point with range(km), azimuth(radians), elevation(radians) to the Satellite
             One_Sgp4.Point3d spherical = One_Sgp4.SatFunctions.calcSphericalCoordinate(observer, startTime, resultDataList[0]);
+
+            //Calculate the Next 5 Passes over a point
+            //for a location, Satellite, StartTime, Accuracy in Seconds = 15sec, MaxNumber of Days = 5 Days, Wgs constant = WGS_84
+            //Returns pass with Location, StartTime of Pass, EndTime Of Pass, Max Elevation in Degrees
+            List<Pass> passes = One_Sgp4.SatFunctions.CalculatePasses(observer, tleISS, new EpochTime(DateTime.UtcNow), 15, 5, Sgp4.wgsConstant.WGS_84);
+            foreach(var p in passes)
+            {
+                Console.Out.WriteLine(p.ToString());
+            }
         }
     }
 }
