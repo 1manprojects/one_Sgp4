@@ -42,9 +42,7 @@ namespace One_Sgp4
 
         private const double a_Wgs72 = 6378.135; //!< double WGS72 const in Km
         private const double a_Wgs84 = 6378.137; //!< double WGS84 const in Km
-        private const double f = 1.0 / 298.26;
-        private const double delta = 1.0e-07;
-        private const double f_2 = (f * (2.0 - f)) * (f * (2.0 - f));
+        
 
         //! Ground constructor.
         /*!
@@ -121,49 +119,49 @@ namespace One_Sgp4
             \param Station to calcuate if satellite is in View
             \param TimeDate start time
             \param List<Sgp4Data> satellite position vector
-            \return Point3d containing range, azimuth, elevation
+            \return Point3d containing range(km), azimuth(degrees), elevation(degrees)
         */
         public static Point3d calcSphericalCoordinate(Coordinate coordinate,
             EpochTime time, Sgp4Data satPosData)
         {
 
             double lsr = time.getLocalSiderealTime(coordinate.getLongitude());
+
             Point3d groundLocation = coordinate.toECI(lsr);
             Point3d result = new Point3d();
 
-            Point3d v = new Point3d();
-            v.x = satPosData.getX() - groundLocation.x;
-            v.y = satPosData.getY() - groundLocation.y;
-            v.z = satPosData.getZ() - groundLocation.z;
+            Point3d r = new Point3d();
+            r.x = satPosData.getX() - groundLocation.x;
+            r.y = satPosData.getY() - groundLocation.y;
+            r.z = satPosData.getZ() - groundLocation.z;
 
             double r_lat = coordinate.getLatetude() * toRadians;
 
             double sin_lat = Math.Sin(r_lat);
             double cos_lat = Math.Cos(r_lat);
-            double sin_srt = Math.Sin(lsr);
-            double cos_srt = Math.Cos(lsr);
+            double sin_theta = Math.Sin(lsr);
+            double cos_theta = Math.Cos(lsr);
 
-
-            double rs = sin_lat * cos_srt * v.x
-                      + sin_lat * sin_srt * v.y
-                      - cos_lat * v.z;
-            double re = -sin_srt * v.x
-                        + cos_srt * v.y;
-            double rz = cos_lat * cos_srt * v.x
-                        + cos_lat * sin_srt * v.y + sin_lat * v.z;
+            double rs = sin_lat * cos_theta * r.x + sin_lat * sin_theta * r.y - cos_lat * r.z;
+            double re = -sin_theta * r.x + cos_theta * r.y;
+            double rz = cos_lat * cos_theta * r.x + cos_lat * sin_theta * r.y + sin_lat * r.z;
 
             result.x = Math.Sqrt(rs * rs + re * re + rz * rz);
-            result.y = Math.Atan(-re / rs);
+            result.y = Math.Atan2(-re , rs);
             result.z = Math.Asin(rz / result.x);
 
+            /*
             if (rs > 0.0)
             {
-                result.y += pi;
+                result.y += pi/2;
             }
             if (result.y < 0.0)
             {
-                result.y += twoPi;
-            }
+                result.y += pi;
+            }*/
+            result.y += pi;
+            result.y = result.y * toDegrees;
+            result.z = result.z * toDegrees;
 
             return result;
         }
@@ -220,27 +218,44 @@ namespace One_Sgp4
             double sat_Y = satPosData.getY();
             double sat_Z = satPosData.getZ();
 
-            double wgs_R = a_Wgs72;
-            if (wgs == Sgp4.wgsConstant.WGS_84)
-                wgs_R = a_Wgs84;
+            
+            double f = WGS_72.f;
+            double wgs_R = WGS_72.radiusEarthKM;
+            if (wgs == Sgp4.wgsConstant.WGS_84) {
+                f = WGS_84.f;
+                wgs_R = WGS_84.radiusEarthKM;
+            }
 
-
+            
+            double delta = 1.0e-07;
+            double f_2 = f * f;
+            double e = 2 * f - f_2;
+            
+            
             double r = Math.Sqrt( (sat_X * sat_X) + (sat_Y * sat_Y) );
             double latitude = AcTan(sat_Z , r);
-            double phi;
-            double c;
-            do
-            {
-                phi = latitude;
-                double c_sin2 = Math.Sin(phi) * Math.Sin(phi);
-                c = 1.0 / Math.Sqrt(1.0 - (f_2 * c_sin2));
-                latitude = AcTan(sat_Z + (wgs_R * c * f_2 * Math.Sin(phi)), r);
-            }
-            while (Math.Abs( latitude - phi) > delta);
+            double c = 1.0;
+            double height = 0.0;
+            double R = wgs_R * c * Math.Cos(latitude);
 
+            for (int i = 0; i< 20; i++)
+            {
+                //R = wgs_R * c * Math.Cos(latitude);
+                c = 1.0 / (Math. Sqrt(1.0 - e * (Math.Sin(latitude) * Math.Sin(latitude))));
+                latitude = AcTan(sat_Z + (wgs_R * c * e * Math.Sin(latitude)), R);                
+            }
             double longitude = AcTan(sat_Y, sat_X) - time.getLocalSiderealTime();
-            
-            double height = (r / Math.Cos(latitude)) - wgs_R * c;
+            height = (R / Math.Cos(latitude)) - (wgs_R * c);
+            //height = Math.Sqrt(sat_X * sat_X + sat_Y * sat_Y + sat_Z * sat_Z) - wgs_R*c;
+
+            if (longitude < pi)
+            {
+                longitude += twoPi;
+            }
+            if (longitude > pi)
+            {
+                longitude -= twoPi;
+            }
 
             latitude = toDegrees * latitude;
             longitude = toDegrees * longitude;

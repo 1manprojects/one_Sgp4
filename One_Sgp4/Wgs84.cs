@@ -32,5 +32,7 @@ namespace One_Sgp4
         public const double j2 = 0.00108262998905;
         public const double j3 = -0.00000253215306;
         public const double j4 = -0.00000161098761;
+        public const double f = 1 / 298.257223563;
+        public const double b = radiusEarthKM * (1 - f);
     }
 }

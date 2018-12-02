@@ -79,8 +79,6 @@ namespace One_Sgp4
         private double radiusEarthKm;
         private double j2, j3, j4, j3oj2, mu, xke, tumin;
 
-        private TimeZoneInfo timeZone = TimeZoneInfo.Local;
-
         private const double twoPi = 2.0 * Math.PI; //!< double constant two Pi
         public const double toRadians = Math.PI / 180.0; //!< double constant converstion to radians
 
@@ -1183,7 +1181,7 @@ namespace One_Sgp4
 
             satCalcData.rec_init = 0;
 
-            if ((2 * Math.PI / satCalcData.rec_no) >= 225.0)
+            if ((twoPi / satCalcData.rec_no) >= 225.0)
             {
                 satCalcData.neo.neo_method = 2;
                 satCalcData.neo.neo_isimp = 1;
@@ -1634,7 +1632,7 @@ namespace One_Sgp4
         } else {
             /* ---------------------- parabolic ------------------------- */
             if (Math.Abs(ecc - 1.0) < small) {
-                // kbn cubic(1.0 / 3.0, 0.0, 1.0, -m, r1r, r1i, r2r, r2i, r3r,
+                // = cubic(1.0 / 3.0, 0.0, 1.0, -m, r1r, r1i, r2r, r2i, r3r,
                 // r3i);
                 e0 = r1r;
                 // kbn if (fileout != null)

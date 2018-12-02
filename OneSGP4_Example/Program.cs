@@ -1,6 +1,7 @@
 ﻿using One_Sgp4;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace OneSGP4_Example
 {
@@ -10,8 +11,8 @@ namespace OneSGP4_Example
         {
             //Parse three line element
             Tle tleISS = ParserTLE.parseTle(
-                "1  8709U 76019A   17083.91463156 +.00000030 +00000-0 +91115-4 0  9995",
-                "2  8709 069.6748 319.8382 0011306 339.5223 102.9699 13.71383337054833",
+                "1 25544U 98067A   18336.26376507  .00001452  00000-0  29279-4 0  9992",
+                "2 25544  51.6401 261.1281 0005200 105.2271 353.1713 15.54045047144653",
                 "ISS 1");
 
             //Parse tle from file
@@ -61,8 +62,15 @@ namespace OneSGP4_Example
             //Get Local SiderealTime for Observer
             double localSiderealTime = startTime.getLocalSiderealTime(observer.getLongitude());
 
-            //Calculate SubPoint of Satellite on ground
-            One_Sgp4.Coordinate satOnGround = One_Sgp4.SatFunctions.calcSatSubPoint(startTime, resultDataList[0], Sgp4.wgsConstant.WGS_84);
+            EpochTime t_time = new EpochTime(12, 46, 0, 1995, 11, 18);
+            Coordinate t_cord = new Coordinate(45.0, -93);
+            Sgp4Data mirPos = new Sgp4Data();
+            mirPos.setX(-4400.594);
+            mirPos.setY(1932.870);
+            mirPos.setZ(4760.712);
+            var lookAngels = SatFunctions.calcSphericalCoordinate(t_cord, t_time, mirPos);
+            var onGround = SatFunctions.calcSatSubPoint(t_time, mirPos, Sgp4.wgsConstant.WGS_72);
+            var r = t_cord.toECI(t_time.getLocalSiderealTime());
 
             //Calculate if Satellite is Visible for a certain Observer on ground at certain timePoint
             bool satelliteIsVisible = One_Sgp4.SatFunctions.isSatVisible(observer, 0.0, startTime, resultDataList[0]);

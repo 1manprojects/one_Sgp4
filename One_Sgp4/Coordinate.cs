@@ -63,7 +63,7 @@ namespace One_Sgp4
         {
             string ret = "Lat: " + latetude +
                         " Long: " + longitude +
-                        " Hight: " + height;
+                        " Height: " + height;
             return ret;
         }
 
