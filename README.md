@@ -12,7 +12,7 @@ The easiest way to install One_Sgp4 is via NuGet.
 
 In Visual Studio's Package Manager Console, enter the following command:
 ```
-Install-Package One_Sgp4 -Version 1.0.1 
+Install-Package One_Sgp4 -Version 1.0.5 
 ```
 
 ### Manually
