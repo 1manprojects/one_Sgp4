@@ -217,36 +217,34 @@ namespace One_Sgp4
             double sat_X = satPosData.getX();
             double sat_Y = satPosData.getY();
             double sat_Z = satPosData.getZ();
-
             
             double f = WGS_72.f;
             double wgs_R = WGS_72.radiusEarthKM;
             if (wgs == Sgp4.wgsConstant.WGS_84) {
                 f = WGS_84.f;
                 wgs_R = WGS_84.radiusEarthKM;
-            }
-
-            
+            }            
             double delta = 1.0e-07;
             double f_2 = f * f;
-            double e = 2 * f - f_2;
-            
+            double e = 2 * f - f_2;            
             
             double r = Math.Sqrt( (sat_X * sat_X) + (sat_Y * sat_Y) );
             double latitude = AcTan(sat_Z , r);
             double c = 1.0;
             double height = 0.0;
-            double R = wgs_R * c * Math.Cos(latitude);
 
-            for (int i = 0; i< 20; i++)
+            double phi;
+
+            do
             {
-                //R = wgs_R * c * Math.Cos(latitude);
-                c = 1.0 / (Math. Sqrt(1.0 - e * (Math.Sin(latitude) * Math.Sin(latitude))));
-                latitude = AcTan(sat_Z + (wgs_R * c * e * Math.Sin(latitude)), R);                
+                phi = latitude;
+                c = 1.0 / (Math.Sqrt(1.0 - e * (Math.Sin(latitude) * Math.Sin(latitude))));
+                latitude = AcTan(sat_Z + (wgs_R * c * e * Math.Sin(latitude)), r);
             }
+            while (Math.Abs(latitude - phi) > delta);
+
             double longitude = AcTan(sat_Y, sat_X) - time.getLocalSiderealTime();
-            height = (R / Math.Cos(latitude)) - (wgs_R * c);
-            //height = Math.Sqrt(sat_X * sat_X + sat_Y * sat_Y + sat_Z * sat_Z) - wgs_R*c;
+            height = (r / Math.Cos(latitude)) - (wgs_R * c);
 
             if (longitude < pi)
             {

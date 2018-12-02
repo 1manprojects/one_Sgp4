@@ -62,6 +62,20 @@ namespace OneSGP4_Example
             //Get Local SiderealTime for Observer
             double localSiderealTime = startTime.getLocalSiderealTime(observer.getLongitude());
 
+            //TESTING MIR
+
+            //TEST ECI
+            EpochTime T_eciTime= new EpochTime(09, 00, 00, 1995, 10, 1);
+            //Test GMST 
+            if (T_eciTime.getLocalSiderealTime() == 2.524218)
+            {
+
+            }
+            Coordinate T_eciCoo = new Coordinate(40, -75);
+            var t_eci = T_eciCoo.toECI(T_eciTime.getLocalSiderealTime());
+            //Coordinate equals x' = 1703.295 km, y' = 4586.650 km, z' = 4077.984 km.
+
+
             EpochTime t_time = new EpochTime(12, 46, 0, 1995, 11, 18);
             Coordinate t_cord = new Coordinate(45.0, -93);
             Sgp4Data mirPos = new Sgp4Data();
@@ -71,6 +85,27 @@ namespace OneSGP4_Example
             var lookAngels = SatFunctions.calcSphericalCoordinate(t_cord, t_time, mirPos);
             var onGround = SatFunctions.calcSatSubPoint(t_time, mirPos, Sgp4.wgsConstant.WGS_72);
             var r = t_cord.toECI(t_time.getLocalSiderealTime());
+
+
+            //TESTING
+
+
+            //Calculate SubPoint of Satellite on ground
+            while (true)
+            {
+                One_Sgp4.EpochTime time = new EpochTime(DateTime.UtcNow);
+                var test = time.getEpoch();
+                Console.Out.WriteLine(test);
+
+                var satpos = One_Sgp4.SatFunctions.getSatPositionAtTime(tleISS, time, Sgp4.wgsConstant.WGS_72);
+
+                Coordinate newC = new Coordinate(48.853333, 2.348611);
+                var look = SatFunctions.calcSphericalCoordinate(newC, time, satpos);
+                One_Sgp4.Coordinate satOnGround = One_Sgp4.SatFunctions.calcSatSubPoint(time, satpos, Sgp4.wgsConstant.WGS_72);
+                Console.Out.WriteLine(satOnGround.toString()  + " - Azimuth: " + look.y + " Elevation: " + look.z );
+                Thread.Sleep(1000);
+            }
+
 
             //Calculate if Satellite is Visible for a certain Observer on ground at certain timePoint
             bool satelliteIsVisible = One_Sgp4.SatFunctions.isSatVisible(observer, 0.0, startTime, resultDataList[0]);
