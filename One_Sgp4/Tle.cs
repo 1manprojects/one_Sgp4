@@ -271,7 +271,7 @@ namespace One_Sgp4
         */
         public double getFirstMeanMotion()
         {
-            return meanMotion;
+            return firstMeanMotion;
         }
 
         //! Returns the Second Mean Motion
