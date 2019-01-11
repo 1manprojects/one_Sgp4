@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Reed</Authors>
-    <Company>1 Man Projects</Company>
+    <Authors>Reed(local patch by robertk66)</Authors>
+    <Company>1 Man Projects(rkos)</Company>
     <Description>This library calculates the orbits of satellites via TLEs data from the web. Other functions for coordination transformation, time calculations and the calculation of contact windows depending on the observers coordinates on earth are also available.</Description>
     <Copyright>The MIT License (MIT)</Copyright>
     <PackageLicenseUrl>https://tldrlegal.com/license/mit-license#fulltext</PackageLicenseUrl>
@@ -19,8 +19,20 @@
   
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net40;net45</TargetFrameworks>
-    <Version>1.0.5</Version>
+    <Version>1.0.6-mypatch-2</Version>
     <PackageReleaseNotes>Included Net 4.0 and Net 4.5 as TargetFrameworks</PackageReleaseNotes>
+    <AssemblyVersion>1.0.*</AssemblyVersion>
+    <FileVersion>1.0.6</FileVersion>
+    <Deterministic>false</Deterministic>
   </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <OutputPath></OutputPath>
+  </PropertyGroup>
+  
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="del bin\Debug\*.* /q&#xD;&#xA;&#xD;&#xA;" />
+  </Target>
 
+ 
 </Project>
