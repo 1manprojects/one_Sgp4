@@ -19,8 +19,9 @@
   
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net40;net45</TargetFrameworks>
-    <Version>1.0.5</Version>
+    <Version>1.0.6</Version>
     <PackageReleaseNotes>Included Net 4.0 and Net 4.5 as TargetFrameworks</PackageReleaseNotes>
+    <AssemblyVersion>1.0.6.0</AssemblyVersion>
   </PropertyGroup>
 
 </Project>
