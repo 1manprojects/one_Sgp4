@@ -407,8 +407,8 @@ namespace One_Sgp4
         public DateTime toDateTime()
         {
             dayToDate(year, epoch);
-            DateTime date = new DateTime(year, month, day, hour, minutes, Convert.ToInt32(seconds));
-            date.AddMilliseconds(seconds % 1);
+            DateTime date = new DateTime(year, month, day, hour, minutes, Convert.ToInt32(Math.Floor(seconds)));
+            date = date.AddMilliseconds((seconds - Math.Floor(seconds))*1000);
             return date;
         }
 
