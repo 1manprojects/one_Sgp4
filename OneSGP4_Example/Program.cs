@@ -1,7 +1,6 @@
 ﻿using One_Sgp4;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace OneSGP4_Example
 {
