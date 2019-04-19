@@ -11,8 +11,8 @@ namespace OneSGP4_Example
         {
             //Parse three line element
             Tle tleISS = ParserTLE.parseTle(
-                "1 25544U 98067A   18336.26376507  .00001452  00000-0  29279-4 0  9992",
-                "2 25544  51.6401 261.1281 0005200 105.2271 353.1713 15.54045047144653",
+                "1 25544U 98067A   19097.23063721 -.00000469  00000-0  00000+0 0  9999",
+                "2 25544  51.6449 353.9503 0002279 151.1697 290.4275 15.52495932164239",
                 "ISS 1");
 
             //Parse tle from file
@@ -65,7 +65,7 @@ namespace OneSGP4_Example
             //TESTING MIR
 
             //TEST ECI
-            EpochTime T_eciTime= new EpochTime(09, 00, 00, 1995, 10, 1);
+            EpochTime T_eciTime = new EpochTime(09, 00, 00, 1995, 10, 1);
             //Test GMST 
             if (T_eciTime.getLocalSiderealTime() == 2.524218)
             {
@@ -87,26 +87,6 @@ namespace OneSGP4_Example
             var r = t_cord.toECI(t_time.getLocalSiderealTime());
 
 
-            //TESTING
-
-
-            //Calculate SubPoint of Satellite on ground
-            while (true)
-            {
-                One_Sgp4.EpochTime time = new EpochTime(DateTime.UtcNow);
-                var test = time.getEpoch();
-                Console.Out.WriteLine(test);
-
-                var satpos = One_Sgp4.SatFunctions.getSatPositionAtTime(tleISS, time, Sgp4.wgsConstant.WGS_72);
-
-                Coordinate newC = new Coordinate(48.853333, 2.348611);
-                var look = SatFunctions.calcSphericalCoordinate(newC, time, satpos);
-                One_Sgp4.Coordinate satOnGround = One_Sgp4.SatFunctions.calcSatSubPoint(time, satpos, Sgp4.wgsConstant.WGS_72);
-                Console.Out.WriteLine(satOnGround.toString()  + " - Azimuth: " + look.y + " Elevation: " + look.z );
-                Thread.Sleep(1000);
-            }
-
-
             //Calculate if Satellite is Visible for a certain Observer on ground at certain timePoint
             bool satelliteIsVisible = One_Sgp4.SatFunctions.isSatVisible(observer, 0.0, startTime, resultDataList[0]);
 
@@ -118,7 +98,7 @@ namespace OneSGP4_Example
             //for a location, Satellite, StartTime, Accuracy in Seconds = 15sec, MaxNumber of Days = 5 Days, Wgs constant = WGS_84
             //Returns pass with Location, StartTime of Pass, EndTime Of Pass, Max Elevation in Degrees
             List<Pass> passes = One_Sgp4.SatFunctions.CalculatePasses(observer, tleISS, new EpochTime(DateTime.UtcNow), 15, 5, Sgp4.wgsConstant.WGS_84);
-            foreach(var p in passes)
+            foreach (var p in passes)
             {
                 Console.Out.WriteLine(p.ToString());
             }

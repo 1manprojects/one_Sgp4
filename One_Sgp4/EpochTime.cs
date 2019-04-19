@@ -198,7 +198,7 @@ namespace One_Sgp4
             }
 
             double doy = 0;
-            for (int i = 1; i < month; i++)
+            for (int i = 0; i < month-1; i++)
             {
                 doy = doy + months[i];
             }
