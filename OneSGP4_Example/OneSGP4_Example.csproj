@@ -45,9 +45,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\One_Sgp4\One_Sgp4.csproj">
       <Project>{1ec74942-0d9a-450e-b396-6009f9292072}</Project>
       <Name>One_Sgp4</Name>
