@@ -45,7 +45,6 @@ namespace OneSGP4_Example
             anotherTime.addDays(2);
             Console.Out.WriteLine(anotherTime.ToString());
 
-
             //Calculate Satellite Position and Speed
             One_Sgp4.Sgp4 sgp4Propagator = new Sgp4(tleISS, Sgp4.wgsConstant.WGS_84);
             //set calculation parameters StartTime, EndTime and caclulation steps in minutes
@@ -60,31 +59,6 @@ namespace OneSGP4_Example
             One_Sgp4.Point3d eci = observer.toECI(startTime.getLocalSiderealTime());
             //Get Local SiderealTime for Observer
             double localSiderealTime = startTime.getLocalSiderealTime(observer.getLongitude());
-
-            //TESTING MIR
-
-            //TEST ECI
-            EpochTime T_eciTime = new EpochTime(09, 00, 00, 1995, 10, 1);
-            //Test GMST 
-            if (T_eciTime.getLocalSiderealTime() == 2.524218)
-            {
-
-            }
-            Coordinate T_eciCoo = new Coordinate(40, -75);
-            var t_eci = T_eciCoo.toECI(T_eciTime.getLocalSiderealTime());
-            //Coordinate equals x' = 1703.295 km, y' = 4586.650 km, z' = 4077.984 km.
-
-
-            EpochTime t_time = new EpochTime(12, 46, 0, 1995, 11, 18);
-            Coordinate t_cord = new Coordinate(45.0, -93);
-            Sgp4Data mirPos = new Sgp4Data();
-            mirPos.setX(-4400.594);
-            mirPos.setY(1932.870);
-            mirPos.setZ(4760.712);
-            var lookAngels = SatFunctions.calcSphericalCoordinate(t_cord, t_time, mirPos);
-            var onGround = SatFunctions.calcSatSubPoint(t_time, mirPos, Sgp4.wgsConstant.WGS_72);
-            var r = t_cord.toECI(t_time.getLocalSiderealTime());
-
 
             //Calculate if Satellite is Visible for a certain Observer on ground at certain timePoint
             bool satelliteIsVisible = One_Sgp4.SatFunctions.isSatVisible(observer, 0.0, startTime, resultDataList[0]);
