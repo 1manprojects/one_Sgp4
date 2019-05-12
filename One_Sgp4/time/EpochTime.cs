@@ -226,7 +226,7 @@ namespace One_Sgp4
             return date;
         }
 
-        //! EpochTime returns the Date of a yeahr and epoch
+        //! EpochTime returns the Date of a year and epoch
         /*!
         \param int Yeahr
         \param double Epoch
@@ -429,6 +429,10 @@ namespace One_Sgp4
             return jd;
         }
 
+        //! Compares EpochTime with another EpochTime
+        /*!
+        \return int 1 if equals else -1
+        */
         public int CompareTo(EpochTime other)
         {
             if (other == null)
@@ -448,15 +452,93 @@ namespace One_Sgp4
                 return 1;
         }
 
-        public static bool operator < (EpochTime e1, EpochTime e2)
+        //! get Time String
+        /*!
+        \return the time as Humanreadable string HH:mm:ss
+        */
+        public string getTimeToString()
         {
-            return e1.CompareTo(e2) < 0;
+            double time = epoch - Math.Floor(epoch);
+            time = time * 24;
+            int hour = Convert.ToInt32(Math.Floor(time));
+            time = (time - hour) * 60.0;
+            int min = Convert.ToInt32(Math.Floor(time));
+            int sec = Convert.ToInt32((time - min) * 60.0);
+            string stringTime = hour.ToString("00") + ":" +
+                          min.ToString("00") + ":" +
+                          sec.ToString("00");
+            return stringTime;
         }
 
+        //! get Date String
+        /*!
+        \return the Date as Humanreadable string dd.MM.yyyy
+        */
+        public string getDateToString()
+        {
+            string date = getDay() + "." + getMonth().ToString("00") + "." + getYear();
+            return date;
+        }
+
+        //! < Operator
+        /*!
+        \return boolean if EpochTime < EpochTime
+        */
+        public static bool operator <(EpochTime e1, EpochTime e2)
+        {
+            return (e1.getYear() < e2.getYear() || e1.getEpoch() < e2.getEpoch());
+        }
+
+        //! > Operator
+        /*!
+        \return boolean if EpochTime > EpochTime
+        */
         public static bool operator >(EpochTime e1, EpochTime e2)
         {
-            return e1.CompareTo(e2) < 0;
+            return (e1.getYear() > e2.getYear() || e1.getEpoch() > e2.getEpoch());
         }
 
+        //! == Operator
+        /*!
+        \return double EpochTime_1 == EpochTime_2
+        */
+        public static bool operator ==(EpochTime e1, EpochTime e2)
+        {
+            return (e1.getEpoch() == e2.getEpoch() &&
+                e1.getYear() == e2.getYear());
+        }
+
+        //! != Operator
+        /*!
+        \return double EpochTime_1 != EpochTime_2
+        */
+        public static bool operator !=(EpochTime e1, EpochTime e2)
+        {
+            return !(e1.getEpoch() == e2.getEpoch() &&
+                e1.getYear() == e2.getYear());
+        }
+
+        //! - Operator
+        /*!
+        \return double EpochTime_1 - EpochTime_2 in days
+        */
+        public static double operator -(EpochTime e1, EpochTime e2)
+        {
+            if (e1 < e2)
+                throw new ArgumentException();
+            if (e1.getYear() > e2.getYear())
+            {
+                double days = 365.0;
+                if (DateTime.IsLeapYear(e2.getYear()))
+                {
+                    days = 366.0;
+                }
+                return e1.getEpoch() + (days - e2.getEpoch());
+            }
+            else
+            {
+                return e1.getEpoch() - e1.getEpoch();
+            }
+        }
     }
 }

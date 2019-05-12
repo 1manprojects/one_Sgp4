@@ -10,8 +10,8 @@ namespace OneSGP4_Example
         {
             //Parse three line element
             Tle tleISS = ParserTLE.parseTle(
-                "1 25544U 98067A   19097.23063721 -.00000469  00000-0  00000+0 0  9999",
-                "2 25544  51.6449 353.9503 0002279 151.1697 290.4275 15.52495932164239",
+                "1 25544U 98067A   19132.30925117  .00001081  00000-0  24694-4 0  9993",
+                "2 25544  51.6426 179.4820 0001363 344.4861  92.2261 15.52657683169680",
                 "ISS 1");
 
             //Parse tle from file
@@ -32,8 +32,20 @@ namespace OneSGP4_Example
 
             //Create Time points
             EpochTime startTime = new EpochTime(DateTime.UtcNow);
-            EpochTime anotherTime = new EpochTime(2018, 100.5); //(Year 2017, 100 day at 12:00 HH)
+            EpochTime anotherTime = new EpochTime(2018, 100.5); //(Year 2018, 100 day at 12:00 HH)
             EpochTime stopTime = new EpochTime(DateTime.UtcNow.AddHours(1));
+
+            //get time difference
+            double daysSince = startTime - anotherTime;
+            //throws exception if first time > second time
+            //double daysSince = anotherTime - startTime;
+
+            //compare Time points
+            EpochTime compareTime = new EpochTime(2018, 100.5); //(Year 2018, 100 day at 12:00 HH)
+            bool equals = anotherTime == compareTime;
+            bool notequals = startTime != anotherTime;
+            bool greater = startTime > anotherTime;
+            bool smaler = anotherTime < startTime;
 
             //Add 15 Seconds to EpochTime
             anotherTime.addTick(15);
@@ -54,7 +66,7 @@ namespace OneSGP4_Example
             resultDataList = sgp4Propagator.getRestults();
 
             //Coordinate of an observer on Ground lat, long, height(in meters)
-            One_Sgp4.Coordinate observer = new Coordinate(35.554595, 18.888574, 0);
+            One_Sgp4.Coordinate observer = new Coordinate(35.00, 18.0, 0);
             //Convert to ECI coordinate system
             One_Sgp4.Point3d eci = observer.toECI(startTime.getLocalSiderealTime());
             //Get Local SiderealTime for Observer
@@ -75,6 +87,7 @@ namespace OneSGP4_Example
             {
                 Console.Out.WriteLine(p.ToString());
             }
+            Console.Out.WriteLine("Done");
         }
     }
 }

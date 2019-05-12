@@ -39,9 +39,6 @@ namespace One_Sgp4
         public const double twoPi = pi * 2.0; //!< double constant two Pi
         public const double toDegrees = 180.0 / pi; //!< double constant conversion to degree
         public const double toRadians = pi / 180.0; //!< double constant converstion to radians
-
-        private const double a_Wgs72 = 6378.135; //!< double WGS72 const in Km
-        private const double a_Wgs84 = 6378.137; //!< double WGS84 const in Km
         
 
         //! Ground constructor.
@@ -124,7 +121,6 @@ namespace One_Sgp4
         public static Point3d calcSphericalCoordinate(Coordinate coordinate,
             EpochTime time, Sgp4Data satPosData)
         {
-
             double lsr = time.getLocalSiderealTime(coordinate.getLongitude());
 
             Point3d groundLocation = coordinate.toECI(lsr);
@@ -146,21 +142,11 @@ namespace One_Sgp4
             double re = -sin_theta * r.x + cos_theta * r.y;
             double rz = cos_lat * cos_theta * r.x + cos_lat * sin_theta * r.y + sin_lat * r.z;
 
-            result.x = Math.Sqrt(rs * rs + re * re + rz * rz);
-            result.y = Math.Atan2(-re , rs);
+            result.x = Math.Sqrt((rs * rs) + (re * re) + (rz * rz));
+            result.y = AcTan(-re , rs);
             result.z = Math.Asin(rz / result.x);
 
-            /*
-            if (rs > 0.0)
-            {
-                result.y += pi/2;
-            }
-            if (result.y < 0.0)
-            {
-                result.y += pi;
-            }*/
-            result.y += pi;
-            result.y = result.y * toDegrees;
+            result.y = (result.y + pi) * toDegrees;
             result.z = result.z * toDegrees;
 
             return result;
@@ -261,6 +247,13 @@ namespace One_Sgp4
             return new Coordinate(latitude, longitude, height);
         }
 
+        //! Calculate satellite position at a single point in time
+        /*!
+            \param tle of satellite
+            \param EpochTime to calculate position
+            \param int WGS-Data to use 0 = WGS_72; 1 = WGS_84
+            \return SGP4Data containing satellite position data
+        */
         public static Sgp4Data getSatPositionAtTime(Tle satellite, EpochTime atTime, Sgp4.wgsConstant wgs)
         {
             Sgp4 sgp4Propagator = new Sgp4(satellite, wgs);
@@ -268,7 +261,16 @@ namespace One_Sgp4
             return sgp4Propagator.getRestults()[0];
         }
 
-
+        //! Calculate Passes of a satellite for ceratin number of days from a starting time
+        /*!
+            \param Coordinate position of observer
+            \param Tle satellite data
+            \param EpochTime of startpoint
+            \param int accuracy time between calculations default 15 seconds
+            \param int number of days to calculate default 5 days
+            \param int WGS-Data to use 0 = WGS_72; 1 = WGS_84 default WGS 84
+            \return List<Pass> List of passes satellite is visible
+        */
         public static List<Pass> CalculatePasses(Coordinate position, Tle satellite, EpochTime startTime, int accuracy = 15,
             int maxNumberOfDays = 5, Sgp4.wgsConstant wgs = Sgp4.wgsConstant.WGS_84)
         {
@@ -276,24 +278,32 @@ namespace One_Sgp4
             EpochTime epoch = new EpochTime(startTime);
             EpochTime end = new EpochTime(startTime);
             end.addDays(maxNumberOfDays);
+
             while (epoch < end)
             {
                 Sgp4Data satPos = getSatPositionAtTime(satellite, epoch, wgs);
                 if (SatFunctions.isSatVisible(position, 0.0, epoch, satPos))
                 {
-                    EpochTime passStart = new EpochTime(epoch);
                     Point3d spherical = SatFunctions.calcSphericalCoordinate(position, epoch, satPos);
-                    double maxElevation = spherical.z;
+                    PassDetail startDetails = new PassDetail(new EpochTime(epoch), spherical.z, spherical.y, spherical.x);
+                    PassDetail maxEleDetails = new PassDetail(new EpochTime(epoch), spherical.z, spherical.y, spherical.x);
+                    //double maxElevation = spherical.z;
                     epoch.addTick(accuracy);
                     satPos = getSatPositionAtTime(satellite, epoch, wgs);
-                    while (SatFunctions.isSatVisible(position, 0.0, epoch, satPos))
+                    while(spherical.z >= 0)
+                    //while (SatFunctions.isSatVisible(position, 0.0, epoch, satPos))
                     {
+                        
                         spherical = SatFunctions.calcSphericalCoordinate(position, epoch, satPos);
-                        if (maxElevation < spherical.z)
-                            maxElevation = spherical.z;
+                        if (maxEleDetails.elevation < spherical.z)
+                        {
+                            maxEleDetails = new PassDetail(new EpochTime(epoch), spherical.z, spherical.y, spherical.x);
+                        }
                         epoch.addTick(accuracy);
+                        satPos = getSatPositionAtTime(satellite, epoch, wgs);
                     }
-                    results.Add(new One_Sgp4.Pass(position, passStart, new EpochTime(epoch), maxElevation * 180.0 / pi));
+                    PassDetail endDetails = new PassDetail(new EpochTime(epoch), spherical.z, spherical.y, spherical.x);
+                    results.Add(new One_Sgp4.Pass(position, startDetails, maxEleDetails, endDetails));
                 }
                 epoch.addTick(accuracy);
             }
