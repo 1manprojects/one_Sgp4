@@ -135,20 +135,16 @@ namespace One_Sgp4
         */
         private double getSiderealTime()
         {
-            //double jd = getJulianGreenwitch();
-            //double gmst = (jd - 2451545.0) / 36525.0;
-            //double st = 24110.54841 + (8640184.812866 * gmst) + (0.093104 * gmst * gmst) - (Math.Pow(gmst, 3) / 0.0000062);
-            
+            double rt = 86400.0;
+
             double jd = getJulianGreenwitch();
             double uT = (jd + 0.5) % 1.0;
             jd = jd - uT;
             double du = jd - 2451545.0;
             double tu = du / 36525.0;
-            double to = 24110.54841 + tu *
-                        (8640184.812866 + tu * (0.093104 - tu * 6.2E-6));
-            double to2 = to % 86400.0 + 86400.0;
-            double gms = (to2 + 86400.0 * 1.00273790934 * uT) % 86400.0;
-            double st = twoPi * gms / 86400.0;
+            double gmst = 24110.54841 + 8640184.812866 * tu + 0.093104 * tu * tu - 0.0000062 * tu * tu * tu;
+            double gms = gmst + rt * 1.00273790934 * uT % rt;
+            double st = twoPi * gms / rt;
             //in radians*/
             return st;
         }
@@ -177,7 +173,7 @@ namespace One_Sgp4
         public double getLocalSiderealTime(double longitude = 0.0)
         {
             double st = getSiderealTime();
-            double lst = st + longitude * toRadians;
+            double lst = st + (longitude * toRadians);
             if (lst < 0.0)
             {
                 lst += twoPi;

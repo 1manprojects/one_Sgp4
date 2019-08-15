@@ -62,52 +62,16 @@ namespace One_Sgp4
         public static bool isSatVisible(Coordinate coordinate, 
             double minElevation, EpochTime time, Sgp4Data satPosData)
         {
-
-                double lsr = time.getLocalSiderealTime(coordinate.getLongitude());
-                Point3d groundLocation = coordinate.toECI(lsr);
-
-                Point3d v = new Point3d();
-                v.x = satPosData.getX() - groundLocation.x;
-                v.y = satPosData.getY() - groundLocation.y;
-                v.z = satPosData.getZ() - groundLocation.z;
-
-                double r_lat = coordinate.getLatetude() * toRadians;
-
-                double sin_lat = Math.Sin(r_lat);
-                double cos_lat = Math.Cos(r_lat);
-                double sin_srt = Math.Sin(lsr);
-                double cos_srt = Math.Cos(lsr);
-
-                
-                double rs = sin_lat * cos_srt * v.x
-                          + sin_lat * sin_srt * v.y
-                          - cos_lat * v.z;
-                double re = - sin_srt * v.x
-                            + cos_srt * v.y;
-                double rz = cos_lat * cos_srt * v.x
-                            + cos_lat * sin_srt * v.y + sin_lat * v.z;
-
-                double range = Math.Sqrt(rs * rs + re * re + rz * rz);
-                double elevation = Math.Asin(rz / range);
-                double azimuth = Math.Atan(-re / rs);
-
-                if (rs > 0.0)
-                {
-                    azimuth += pi;
-                }
-                if (azimuth < 0.0)
-                {
-                    azimuth += twoPi;
-                }
-
-                if (elevation >= minElevation)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+            Point3d res = calcSphericalCoordinate(coordinate, time, satPosData);
+            double elevation = res.z;
+            if (elevation >= minElevation)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         //! Calculate Range, Azimuth and elevation for satellite
@@ -121,9 +85,9 @@ namespace One_Sgp4
         public static Point3d calcSphericalCoordinate(Coordinate coordinate,
             EpochTime time, Sgp4Data satPosData)
         {
-            double lsr = time.getLocalSiderealTime(coordinate.getLongitude());
+            double lsr =  time.getLocalSiderealTime(coordinate.getLongitude());
 
-            Point3d groundLocation = coordinate.toECI(lsr);
+            Point3d groundLocation = coordinate.toECI(time.getLocalSiderealTime());
             Point3d result = new Point3d();
 
             Point3d r = new Point3d();
@@ -147,6 +111,10 @@ namespace One_Sgp4
             result.z = Math.Asin(rz / result.x);
 
             result.y = (result.y + pi) * toDegrees;
+            if (result.y > 360)
+            {
+                result.y = result.y - 360;
+            }
             result.z = result.z * toDegrees;
 
             return result;

@@ -1,6 +1,7 @@
 ﻿using One_Sgp4;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace OneSGP4_Example
 {
@@ -10,8 +11,8 @@ namespace OneSGP4_Example
         {
             //Parse three line element
             Tle tleISS = ParserTLE.parseTle(
-                "1 25544U 98067A   19132.30925117  .00001081  00000-0  24694-4 0  9993",
-                "2 25544  51.6426 179.4820 0001363 344.4861  92.2261 15.52657683169680",
+                "1 25544U 98067A   19227.31184028  .00000529  00000-0  16751-4 0  9998",
+                "2 25544  51.6433  67.9253 0006033 260.2535  81.3368 15.51055822184423",
                 "ISS 1");
 
             //Parse tle from file
@@ -65,10 +66,14 @@ namespace OneSGP4_Example
             //Return Results containing satellite Position x,y,z (ECI-Coordinates in Km) and Velocity x_d, y_d, z_d (ECI-Coordinates km/s) 
             resultDataList = sgp4Propagator.getRestults();
 
+            startTime = new EpochTime(DateTime.Now);
             //Coordinate of an observer on Ground lat, long, height(in meters)
-            One_Sgp4.Coordinate observer = new Coordinate(35.00, 18.0, 0);
+            One_Sgp4.Coordinate observer = new Coordinate(35.00, 18, 0);
             //Convert to ECI coordinate system
-            One_Sgp4.Point3d eci = observer.toECI(startTime.getLocalSiderealTime());
+            One_Sgp4.Point3d eci = observer.toECI(0.0);
+            Console.Out.WriteLine("Sidereal Time: " + startTime.getLocalSiderealTime());
+            Console.Out.WriteLine(String.Format("X: {0}, Y: {1}, Z: {2} ", eci.x, eci.y, eci.z));
+
             //Get Local SiderealTime for Observer
             double localSiderealTime = startTime.getLocalSiderealTime(observer.getLongitude());
 
@@ -82,7 +87,7 @@ namespace OneSGP4_Example
             //Calculate the Next 5 Passes over a point
             //for a location, Satellite, StartTime, Accuracy in Seconds = 15sec, MaxNumber of Days = 5 Days, Wgs constant = WGS_84
             //Returns pass with Location, StartTime of Pass, EndTime Of Pass, Max Elevation in Degrees
-            List<Pass> passes = One_Sgp4.SatFunctions.CalculatePasses(observer, tleISS, new EpochTime(DateTime.UtcNow), 15, 5, Sgp4.wgsConstant.WGS_84);
+            List<Pass> passes = One_Sgp4.SatFunctions.CalculatePasses(observer, tleISS, new EpochTime(DateTime.UtcNow));
             foreach (var p in passes)
             {
                 Console.Out.WriteLine(p.ToString());
