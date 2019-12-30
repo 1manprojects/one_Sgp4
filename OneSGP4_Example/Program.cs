@@ -11,8 +11,8 @@ namespace OneSGP4_Example
         {
             //Parse three line element
             Tle tleISS = ParserTLE.parseTle(
-                "1 25544U 98067A   19227.31184028  .00000529  00000-0  16751-4 0  9998",
-                "2 25544  51.6433  67.9253 0006033 260.2535  81.3368 15.51055822184423",
+                "1 25544U 98067A   19364.04305556 -.00001219  00000-0 -13621-4 0  9993",
+                "2 25544  51.6441 110.3812 0005206  82.0414 249.9912 15.49519575205634",
                 "ISS 1");
 
             //Parse tle from file
@@ -83,6 +83,19 @@ namespace OneSGP4_Example
             //Calculate Sperical Coordinates from an Observer to Satellite
             //returns 3D-Point with range(km), azimuth(radians), elevation(radians) to the Satellite
             One_Sgp4.Point3d spherical = One_Sgp4.SatFunctions.calcSphericalCoordinate(observer, startTime, resultDataList[0]);
+
+
+            while (true)
+            {
+                EpochTime time = new EpochTime(DateTime.UtcNow);
+                Sgp4Data data = SatFunctions.getSatPositionAtTime(tleISS, time, Sgp4.wgsConstant.WGS_84);
+
+                //Console.Out.WriteLine(time.getLocalSiderealTime(-76.0));
+
+                var point = SatFunctions.calcSatSubPoint(time, data, Sgp4.wgsConstant.WGS_84);
+                Console.Out.WriteLine(point.toString());
+                Thread.Sleep(1000);
+            }
 
             //Calculate the Next 5 Passes over a point
             //for a location, Satellite, StartTime, Accuracy in Seconds = 15sec, MaxNumber of Days = 5 Days, Wgs constant = WGS_84

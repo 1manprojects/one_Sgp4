@@ -143,7 +143,7 @@ namespace One_Sgp4
             double du = jd - 2451545.0;
             double tu = du / 36525.0;
             double gmst = 24110.54841 + 8640184.812866 * tu + 0.093104 * tu * tu - 0.0000062 * tu * tu * tu;
-            double gms = gmst + rt * 1.00273790934 * uT % rt;
+            double gms = (gmst + rt * 1.00273790934 * uT) % rt;
             double st = twoPi * gms / rt;
             //in radians*/
             return st;

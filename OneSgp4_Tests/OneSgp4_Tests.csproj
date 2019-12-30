@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="EpochTimeTest.cs" />
     <Compile Include="FileParserTests.cs" />
+    <Compile Include="SatTest.cs" />
     <Compile Include="TleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

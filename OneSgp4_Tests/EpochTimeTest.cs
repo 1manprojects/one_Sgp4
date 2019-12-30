@@ -52,6 +52,18 @@ namespace OneSgp4_Tests
             Assert.That(et.getDayOfYear(), Is.EqualTo(doy));
             Assert.That(et.toDateTime(), Is.EqualTo(dateTime));
         }
-     
+
+        [TestCase(2.524218, 9, 0, 0, 1995, 10, 1,0)]
+        [TestCase(0.3865996, 0, 0, 0, 2019, 12, 30, -76.0)]
+        [TestCase(3.3327650, 0, 0, 0, 2018, 2, 15, 46)]
+        public void TestSidrealTime(double res, int hh, int mm, int ss, int yyyy, int MM, int dd, double longitude)
+        {
+            //9,0,0,1995,10,1
+            EpochTime testTime = new EpochTime(hh, mm, ss, yyyy, MM, dd);
+            double time = testTime.getLocalSiderealTime(longitude);
+            Assert.GreaterOrEqual(time, res);
+            Assert.Less(time, res + 0.000001);
+        }
+
     }
 }
