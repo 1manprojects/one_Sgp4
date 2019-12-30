@@ -1,5 +1,7 @@
 # one_Sgp4
 
+[![Actions Status](https://github.com/1manprojects/one_Sgp4/workflows/.NET%20Core/badge.svg)](https://github.com/1manprojects/one_Sgp4/actions)
+
 ## Introduction
 
 This library calculates the orbits of satellites via TLEs data from the web. Other functions for coordination transformation, time calculations and the calculation of contact windows depending on the observers coordinates on earth are also available. 
