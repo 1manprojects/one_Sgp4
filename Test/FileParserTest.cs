@@ -1,12 +1,12 @@
-﻿using NUnit.Framework;
-using One_Sgp4;
+﻿using System;
 using System.Linq;
+using NUnit.Framework;
+using One_Sgp4;
 
-namespace OneSgp4_Tests
+namespace Test
 {
-    class FileParserTests
+    class FileParserTest
     {
-
         [Test]
         public void test2LineFile()
         {
@@ -33,6 +33,5 @@ namespace OneSgp4_Tests
             Assert.That(names.Count, Is.EqualTo(3));
             Assert.That(names, Is.EquivalentTo(new string[] { "Sat123 and Something", "Anotherone", "TheLast" }));
         }
-
     }
 }

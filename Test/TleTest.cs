@@ -1,12 +1,11 @@
-﻿using NUnit.Framework;
-using One_Sgp4;
-using System;
+﻿using System;
 using System.IO;
+using NUnit.Framework;
+using One_Sgp4;
 
-namespace OneSgp4_Tests
+namespace Test
 {
-    [TestFixture]
-    public class TleTests
+    class TleTest
     {
         [Test]
         public void TleParseFromLinesShouldSucceed()
@@ -41,7 +40,6 @@ namespace OneSgp4_Tests
             Assert.That(t.getStartYear(), Is.EqualTo(17));
 
             t = ParserTLE.parseTle(line1, line2, "Pegasus");
-
             Assert.That(t.isValidData, Is.True);
             Assert.That(t.getClassification(), Is.EqualTo(0));
             Assert.That(t.getDrag(), Is.EqualTo(0.000052625));
@@ -64,13 +62,6 @@ namespace OneSgp4_Tests
             Assert.That(t.getSetNumber(), Is.EqualTo(999));
             Assert.That(t.getStartNr(), Is.EqualTo(36));
             Assert.That(t.getStartYear(), Is.EqualTo(17));
-
-
-
-
-
-
-
         }
 
         [Test]
@@ -115,6 +106,5 @@ namespace OneSgp4_Tests
                 Assert.That(ex.Message, Contains.Substring("checksum error"));
             }
         }
-
     }
 }

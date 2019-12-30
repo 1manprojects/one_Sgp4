@@ -1,10 +1,10 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using One_Sgp4;
 
-namespace OneSgp4_Tests
+namespace Test
 {
-    [TestFixture]
-    public class SatTest
+    class SatTest
     {
         [TestCase(15, 12, 0, 2019, 12, 24)]
         [TestCase(0, 12, 0, 2019, 12, 25)]
