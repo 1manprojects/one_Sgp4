@@ -16,3 +16,11 @@ jobs:
     - name: Build with dotnet
       working-directory: One_Sgp4
       run: dotnet build --configuration Release
+  
+    - name: Build test
+      working-directory: OneSgp4_Tests
+      run: dotnet build --configuration Release
+      
+    - name: Test
+      working-directory: /bin/Release/net45
+      run: dotnet vstest Onesgp4_Tests.dll 
