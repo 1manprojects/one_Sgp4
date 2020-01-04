@@ -1,7 +1,6 @@
 ﻿using One_Sgp4;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace OneSGP4_Example
 {
@@ -85,22 +84,10 @@ namespace OneSGP4_Example
             One_Sgp4.Point3d spherical = One_Sgp4.SatFunctions.calcSphericalCoordinate(observer, startTime, resultDataList[0]);
 
 
-            while (true)
-            {
-                EpochTime time = new EpochTime(DateTime.UtcNow);
-                Sgp4Data data = SatFunctions.getSatPositionAtTime(tleISS, time, Sgp4.wgsConstant.WGS_84);
-
-                //Console.Out.WriteLine(time.getLocalSiderealTime(-76.0));
-
-                var point = SatFunctions.calcSatSubPoint(time, data, Sgp4.wgsConstant.WGS_84);
-                Console.Out.WriteLine(point.toString());
-                Thread.Sleep(1000);
-            }
-
             //Calculate the Next 5 Passes over a point
             //for a location, Satellite, StartTime, Accuracy in Seconds = 15sec, MaxNumber of Days = 5 Days, Wgs constant = WGS_84
             //Returns pass with Location, StartTime of Pass, EndTime Of Pass, Max Elevation in Degrees
-            List<Pass> passes = One_Sgp4.SatFunctions.CalculatePasses(observer, tleISS, new EpochTime(DateTime.UtcNow));
+            //List<Pass> passes = One_Sgp4.SatFunctions.CalculatePasses(observer, tleISS, new EpochTime(DateTime.UtcNow));
             foreach (var p in passes)
             {
                 Console.Out.WriteLine(p.ToString());

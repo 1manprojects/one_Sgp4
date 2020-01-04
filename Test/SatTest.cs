@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
 using One_Sgp4;
 
@@ -32,6 +32,21 @@ namespace Test
             Assert.LessOrEqual(ground.getLatetude(), 90.0);
             Assert.Greater(ground.getLatetude(), -90.0);
 
+        }
+
+        [Test]
+        public void TestSatContact()
+        {
+            Tle tleISS = ParserTLE.parseTle(
+                "1 25544U 98067A   19356.46068278  .00000035  00000-0  86431-5 0  9990",
+                "2 25544  51.6420 147.9381 0007793  61.6458  55.7201 15.50124783204461",
+                "ISS 1");
+
+            Coordinate position = new Coordinate(35, 18, 0);
+            EpochTime startTime = new EpochTime(0, 0, 0, 2020, 1, 6);
+
+            List<Pass> passes = SatFunctions.CalculatePasses(position, tleISS, startTime, 1, 1);
+            Assert.AreEqual(8, passes.Count);
         }
     }
 }

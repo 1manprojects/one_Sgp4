@@ -476,13 +476,53 @@ namespace One_Sgp4
             return date;
         }
 
+        //! Equals
+        /*!
+        \return true if objects are equals
+        */
+        public override bool Equals(object obj)
+        {
+            return obj is EpochTime time &&
+                   hour == time.hour &&
+                   minutes == time.minutes &&
+                   seconds == time.seconds &&
+                   year == time.year &&
+                   month == time.month &&
+                   day == time.day &&
+                   epoch == time.epoch &&
+                   days == time.days;
+        }
+
+        //! GetHaschCode Operator
+        /*!
+        \return Hash code for Instance
+        */
+        public override int GetHashCode()
+        {
+            var hashCode = -1560259153;
+            hashCode = hashCode * -1521134295 + hour.GetHashCode();
+            hashCode = hashCode * -1521134295 + minutes.GetHashCode();
+            hashCode = hashCode * -1521134295 + seconds.GetHashCode();
+            hashCode = hashCode * -1521134295 + year.GetHashCode();
+            hashCode = hashCode * -1521134295 + month.GetHashCode();
+            hashCode = hashCode * -1521134295 + day.GetHashCode();
+            hashCode = hashCode * -1521134295 + epoch.GetHashCode();
+            return hashCode;
+        }
+
         //! < Operator
         /*!
         \return boolean if EpochTime < EpochTime
         */
         public static bool operator <(EpochTime e1, EpochTime e2)
         {
-            return (e1.getYear() < e2.getYear() || e1.getEpoch() < e2.getEpoch());
+            if (e1.getYear() == e2.getYear())
+            {
+                return e1.getEpoch() < e2.getEpoch();
+            } else
+            {
+                return e1.getYear() < e2.getYear();
+            }
         }
 
         //! > Operator
@@ -536,5 +576,7 @@ namespace One_Sgp4
                 return e1.getEpoch() - e1.getEpoch();
             }
         }
+
+
     }
 }
