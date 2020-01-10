@@ -121,7 +121,7 @@ namespace One_Sgp4
         /*!
         \return double x, y, z;
         */
-        public Point3d getPositonData()
+        public Point3d getPositionData()
         {
             return pos;
         }
