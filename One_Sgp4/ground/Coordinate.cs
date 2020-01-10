@@ -33,7 +33,7 @@ namespace One_Sgp4
         public const double toDegrees = 180.0 / pi; //!< double constant conversion to degree
         public const double toRadians = pi / 180.0; //!< double constant converstion to radians
 
-        private double latetude; //!< double Latetude in degree
+        private double latitude; //!< double Latetude in degree
         private double longitude; //!< double longitude in degree
         private double height; //!< double height in meters
 
@@ -43,10 +43,10 @@ namespace One_Sgp4
         \param double longitude
         \param double hight default 0.0
         */
-        public Coordinate(double _latetude, double _longitude,
+        public Coordinate(double _latitude, double _longitude,
                              double _height = 0.0)
         {
-            latetude = _latetude;
+            latitude = _latitude;
             longitude = _longitude;
             height = _height;
         }
@@ -57,7 +57,7 @@ namespace One_Sgp4
         */
         public string toString()
         {
-            string ret = "Lat: " + latetude +
+            string ret = "Lat: " + latitude +
                         " Long: " + longitude +
                         " Height: " + height;
             return ret;
@@ -67,9 +67,9 @@ namespace One_Sgp4
         /*!
         \return double Latetude
         */
-        public double getLatetude()
+        public double getLatitude()
         {
-            return latetude;
+            return latitude;
         }
 
         //! Returns the Longitude
@@ -106,7 +106,7 @@ namespace One_Sgp4
                 a = WGS_84.radiusEarthKM;
             }
             double srt = siderealTime + (toRadians * longitude);
-            double lat_rad = toRadians * latetude;
+            double lat_rad = toRadians * latitude;
             Point3d eciPos = new Point3d();
             //oblate earth
             double c = 1.0 / (Math.Sqrt(1.0 + f * (f - 2.0) *
