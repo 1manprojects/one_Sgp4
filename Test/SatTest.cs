@@ -29,8 +29,8 @@ namespace Test
             Assert.Greater(ground.getHeight(), 0);
             Assert.LessOrEqual(ground.getLongitude(), 180.0);
             Assert.Greater(ground.getLongitude(), -180.0);
-            Assert.LessOrEqual(ground.getLatetude(), 90.0);
-            Assert.Greater(ground.getLatetude(), -90.0);
+            Assert.LessOrEqual(ground.getLatitude(), 90.0);
+            Assert.Greater(ground.getLatitude(), -90.0);
 
         }
 

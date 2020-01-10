@@ -405,7 +405,8 @@ namespace One_Sgp4
             dayToDate(year, epoch);
             DateTime date = new DateTime(year, month, day, hour, minutes, Convert.ToInt32(Math.Floor(seconds)));
             date = date.AddMilliseconds((seconds - Math.Floor(seconds))*1000);
-            return date;
+            var newDate = DateTime.SpecifyKind(date, DateTimeKind.Utc);
+            return newDate;
         }
 
         //! Returns the Date and Time in JulianDate

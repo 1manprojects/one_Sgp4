@@ -95,7 +95,7 @@ namespace One_Sgp4
             r.y = satPosData.getY() - groundLocation.y;
             r.z = satPosData.getZ() - groundLocation.z;
 
-            double r_lat = coordinate.getLatetude() * toRadians;
+            double r_lat = coordinate.getLatitude() * toRadians;
 
             double sin_lat = Math.Sin(r_lat);
             double cos_lat = Math.Cos(r_lat);
@@ -226,7 +226,7 @@ namespace One_Sgp4
         {
             Sgp4 sgp4Propagator = new Sgp4(satellite, wgs);
             sgp4Propagator.runSgp4Cal(atTime, atTime, 1 / 60.0);
-            return sgp4Propagator.getRestults()[0];
+            return sgp4Propagator.getResults()[0];
         }
 
         //! Calculate Passes of a satellite for ceratin number of days from a starting time

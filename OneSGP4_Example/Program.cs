@@ -64,7 +64,7 @@ namespace OneSGP4_Example
             sgp4Propagator.runSgp4Cal(startTime, stopTime, 1 / 30.0); // 1/60 => caclulate sat points every 2 seconds
             List<One_Sgp4.Sgp4Data> resultDataList = new List<Sgp4Data>();
             //Return Results containing satellite Position x,y,z (ECI-Coordinates in Km) and Velocity x_d, y_d, z_d (ECI-Coordinates km/s) 
-            resultDataList = sgp4Propagator.getRestults();
+            resultDataList = sgp4Propagator.getResults();
 
             startTime = new EpochTime(DateTime.Now);
             //Coordinate of an observer on Ground lat, long, height(in meters)

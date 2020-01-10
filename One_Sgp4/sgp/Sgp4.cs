@@ -2015,7 +2015,7 @@ namespace One_Sgp4
 	        return 0;
         }
 
-        public List<Sgp4Data> getRestults()
+        public List<Sgp4Data> getResults()
         {
             return resultOrbitData;
         }
