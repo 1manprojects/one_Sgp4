@@ -19,12 +19,12 @@
   
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1;netstandard2.0;net40;net45</TargetFrameworks>
-    <Version>1.0.10</Version>
+    <Version>1.0.11</Version>
     <PackageReleaseNotes>Included Net 4.0 and Net 4.5 as TargetFrameworks</PackageReleaseNotes>
-    <AssemblyVersion>1.0.10.0</AssemblyVersion>
+    <AssemblyVersion>1.0.11.0</AssemblyVersion>
     <PackageLicenseExpression />
     <PackageLicenseFile>license.txt</PackageLicenseFile>
-    <FileVersion>1.0.10.0</FileVersion>
+    <FileVersion>1.0.11.0</FileVersion>
   </PropertyGroup>
   
   <ItemGroup>
