@@ -59,5 +59,43 @@ namespace Test
             Assert.GreaterOrEqual(time, res);
             Assert.Less(time, res + 0.000001);
         }
+
+        [TestCase(2000, 11, 2, 14, 25, 23, DateTimeKind.Utc)]
+        [TestCase(2020, 01, 12, 09, 00, 00, DateTimeKind.Local)]
+        [TestCase(1999, 11, 2, 14, 25, 23, DateTimeKind.Utc)]
+        [TestCase(2013, 05, 19, 23, 00, 15, DateTimeKind.Utc)]
+        [TestCase(2020, 02, 29, 00, 54, 44, DateTimeKind.Local)]    //Leap Year
+        public void TestDateConversion(int yyyy, int MM, int dd, int hh, int mm, int ss, DateTimeKind timeKind)
+        {
+            DateTime dt = new DateTime(yyyy, MM, dd, hh, mm, ss, timeKind);
+            EpochTime et = new EpochTime(dt.ToUniversalTime());
+            Assert.That(et.getYear(), Is.EqualTo(dt.ToUniversalTime().Year));
+            Assert.That(et.getMonth(), Is.EqualTo(dt.ToUniversalTime().Month));
+            Assert.That(et.getDay(), Is.EqualTo(dt.ToUniversalTime().Day));
+            Assert.That(et.getHour(), Is.EqualTo(dt.ToUniversalTime().Hour));
+            Assert.That(et.getMin(), Is.EqualTo(dt.ToUniversalTime().Minute));
+            Assert.That((int)et.getSec(), Is.EqualTo(dt.ToUniversalTime().Second));
+
+            DateTime ndt = et.toDateTime();
+            Assert.That(ndt.Year, Is.EqualTo(dt.ToUniversalTime().Year));
+            Assert.That(ndt.Month, Is.EqualTo(dt.ToUniversalTime().Month));
+            Assert.That(ndt.Day, Is.EqualTo(dt.ToUniversalTime().Day));
+            Assert.That(ndt.Hour, Is.EqualTo(dt.ToUniversalTime().Hour));
+            Assert.That(ndt.Minute, Is.EqualTo(dt.ToUniversalTime().Minute));
+            Assert.That(ndt.Second, Is.EqualTo(dt.ToUniversalTime().Second));
+        }
+
+        [TestCase(1995, 10, 1, 0, 0, 0, 2449991.5)]
+        [TestCase(2020, 01, 12, 09, 00, 00, 2458860.875)]
+        [TestCase(1999, 11, 2, 14, 25, 23, 2451485.10096)]
+        [TestCase(2013, 05, 19, 23, 00, 15, 2456432.45851)]
+        [TestCase(2020, 02, 29, 00, 54, 44, 2458908.53801)]
+        public void TestJulianDate(int yyyy, int MM, int dd, int hh, int mm, int ss, double julianDate)
+        {
+            double e = 0.000005;
+            EpochTime et = new EpochTime(hh, mm, ss, yyyy, MM, dd);
+            double etJul = et.toJulianDate();
+            Assert.That(etJul, Is.InRange(julianDate-e,julianDate+e));
+        }
     }
 }
