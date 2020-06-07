@@ -4,30 +4,22 @@
 
 ## Introduction
 
-This library calculates the orbits of satellites via TLEs data from the web. Other functions for coordination transformation, time calculations and the calculation of contact windows depending on the observers coordinates on earth are also available. 
-
-This library was created since I could not find a c# library with the necessary functions that I required. The calculations for the orbit propagations are based on the [SpaceTrack Report 3](https://celestrak.com/NORAD/documentation/spacetrk.pdf). Other Calculations for Time and coordination transformations were taken from [Dr. T.S. Kelso website] (http://celestrak.com/columns/).
-
-
-
 This library calculates the orbits of satellites via TLEs data. Other functions for coordination transformation, time calculations, and the calculation of contact windows depending on the observer's coordinates on earth are also available.
 
 This library was created since I could not find a c# library with the necessary functions that I required. The calculations for the orbit propagations are based on the [SpaceTrack Report 3](https://celestrak.com/NORAD/documentation/spacetrk.pdf). Other Calculations for Time and coordination transformations were taken from [Dr. T.S. Kelso website](http://celestrak.com/columns/).
 
 ### Limitations:
 
-Currently, only the  Simplified General Perturbations (SGP) model is implemented which is optimized for objects in a Low Earth Orbit (LEO) [1](https://celestrak.com/NORAD/documentation/spacetrk.pdf). For Objects in a higher orbit, the Simplified Deep Space Perturbations (SDP) model should be used. 
-
-
-
+Currently, only the  Simplified General Perturbations (SGP) model is implemented which is optimized for objects in a Low Earth Orbit (LEO) ([1](https://celestrak.com/NORAD/documentation/spacetrk.pdf)). For Objects in a higher orbit, the Simplified Deep Space Perturbations (SDP) model should be used. 
 
 ### Accuracy:
 
-The SGP4 implementation is accurate in the KM range meaning the calculated position of an object can be off by around 1 km [2](https://celestrak.com/NORAD/documentation/spacetrk.pdf). This error will grow larger for each day calculated. Thus it is recommended to update the TLEs used daily.
+The SGP4 implementation is accurate in the KM range meaning the calculated position of an object can be off by around 1 km ([2](https://celestrak.com/NORAD/documentation/spacetrk.pdf)). This error will grow larger for each day calculated. Thus it is recommended to update the TLEs used daily.
 
 ### Future Work:
 
 In the future, I would like to implement the SDP4 model as well as the improved SGP8 and SDP8 models.
+
 
 
 ## Installing via NuGet
