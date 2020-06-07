@@ -20,7 +20,6 @@ Currently, only the  Simplified General Perturbations (SGP) model is implemented
 
 
 
-asdfasdf
 
 ### Accuracy:
 
