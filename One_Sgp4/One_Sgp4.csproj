@@ -19,12 +19,12 @@
   
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1;netstandard2.0;net40;net45</TargetFrameworks>
-    <Version>1.0.11</Version>
-    <PackageReleaseNotes>Fixed minor conversion Issues with Date time</PackageReleaseNotes>
-    <AssemblyVersion>1.0.11.0</AssemblyVersion>
+    <Version>1.0.12</Version>
+    <PackageReleaseNotes>Fixed Issue with EpochTime not adding ticks correclty</PackageReleaseNotes>
+    <AssemblyVersion>1.0.12.0</AssemblyVersion>
     <PackageLicenseExpression />
     <PackageLicenseFile>license.txt</PackageLicenseFile>
-    <FileVersion>1.0.11.0</FileVersion>
+    <FileVersion>1.0.12.0</FileVersion>
     <Product>One_Sgp4</Product>
     <PackageId>One_Sgp4</PackageId>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
