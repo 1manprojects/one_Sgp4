@@ -97,5 +97,17 @@ namespace Test
             double etJul = et.toJulianDate();
             Assert.That(etJul, Is.InRange(julianDate-e,julianDate+e));
         }
+
+        
+        [TestCase(1999,4,22,12,45,30, 3 * 86400.0, "25.04.1999-12:45:30")]
+        [TestCase(1999, 12, 29, 12, 00, 00, 6 * 86400.0, "04.01.2000-12:00:00")]
+        [TestCase(2020, 12, 29, 12, 00, 00, 6 * 86400.0, "04.01.2021-12:00:00")]
+        [TestCase(2018, 11, 20, 05, 45, 33, 5 * 86400.0, "25.11.2018-05:45:33")]
+        public void TestToString(int yyyy, int MM, int dd, int hh, int mm, int ss, double ticksToAdd, string result)
+        {
+            EpochTime epoch = new EpochTime(hh, mm, ss, yyyy, MM, dd);
+            epoch.addTick(ticksToAdd);
+            Assert.AreEqual(result, epoch.ToString());
+        }
     }
 }

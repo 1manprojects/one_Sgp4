@@ -99,7 +99,7 @@ namespace One_Sgp4
         */
         public override string ToString()
         {
-            return string.Format("{0}:\nStart: {1}\nMax Elevation: {2}\nEnd: {3}", start.time.getDateToString(), start.ToString(), maxElevation.ToString(), end.ToString());
+            return string.Format("{0}:\nStart: {1}\nMax Elevation: {2}\nEnd: {3}", start.time.ToString(), start.ToString(), maxElevation.ToString(), end.ToString());
         }
     }
 }

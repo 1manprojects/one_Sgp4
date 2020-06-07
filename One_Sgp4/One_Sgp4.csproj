@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>Reed</Authors>
     <Company>1 Man Projects</Company>
     <Description>This library calculates the orbits of satellites via TLEs data from the web. Other functions for coordination transformation, time calculations and the calculation of contact windows depending on the observers coordinates on earth are also available.</Description>
@@ -20,11 +20,14 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1;netstandard2.0;net40;net45</TargetFrameworks>
     <Version>1.0.11</Version>
-    <PackageReleaseNotes>Included Net 4.0 and Net 4.5 as TargetFrameworks</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed minor conversion Issues with Date time</PackageReleaseNotes>
     <AssemblyVersion>1.0.11.0</AssemblyVersion>
     <PackageLicenseExpression />
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <FileVersion>1.0.11.0</FileVersion>
+    <Product>One_Sgp4</Product>
+    <PackageId>One_Sgp4</PackageId>
+    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
   </PropertyGroup>
   
   <ItemGroup>

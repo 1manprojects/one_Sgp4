@@ -40,7 +40,7 @@ namespace One_Sgp4
         private double epoch; //!< double epoch of the Date
 
         private const double secToDay = 86400.0; //!< double constant seconds of a day
-        private int days = 365; //!< int days in the year
+        private const int days = 365; //!< int days in the year
 
         private const double twoPi = 2.0 * Math.PI; //!< double constant two Pi
         public const double toRadians = Math.PI / 180.0; //!< double constant converstion to radians
@@ -216,7 +216,7 @@ namespace One_Sgp4
             time = (time - hour) * 60.0;
             int min = Convert.ToInt32(Math.Floor(time));
             int sec = Convert.ToInt32 ((time - min) * 60.0 );
-            string date = getDay() + "." + getMonth().ToString("00") + "." + getYear() + "-" + hour.ToString("00") + ":" +
+            string date = getDay().ToString("00") + "." + getMonth().ToString("00") + "." + getYear() + "-" + hour.ToString("00") + ":" +
                           min.ToString("00") + ":" +
                           sec.ToString("00");
             return date;
@@ -241,6 +241,10 @@ namespace One_Sgp4
                     year = year + 1900;
             }
             int dayOfYear = Convert.ToInt32(Math.Floor(epoch));
+            if (dayOfYear == 0)
+            {
+                dayOfYear = 1;
+            }
             
             int[] months = new int[12] {31,28,31,30,31,30,31,31,30,31,30,31};
             if( year % 4 == 0)
@@ -278,6 +282,7 @@ namespace One_Sgp4
             time = (time - hour) * 60.0;
             minutes = Convert.ToInt32(Math.Floor(time));
             seconds = (time - minutes) * 60.0;
+            dayToDate(this.year, this.epoch);
         }
 
         //! adds an tick in seconds on current time
@@ -290,17 +295,15 @@ namespace One_Sgp4
         public void addTick(double tick)
         {
             epoch = epoch + (tick / secToDay );
+            int daysInYear = days;
             if (year % 4 == 0)
             {
-                days = 366;
+                daysInYear = days + 1;
             }
-            else
+            if(epoch >= daysInYear + 1)
             {
-                days = 365;
-            }
-            if(epoch >= days + 1)
-            {
-                epoch = epoch % 1;
+                epoch = epoch - daysInYear;
+                //epoch = epoch % 1;
                 year++;
             }
             convertEpochToTime();
@@ -490,8 +493,7 @@ namespace One_Sgp4
                    year == time.year &&
                    month == time.month &&
                    day == time.day &&
-                   epoch == time.epoch &&
-                   days == time.days;
+                   epoch == time.epoch;
         }
 
         //! GetHaschCode Operator
