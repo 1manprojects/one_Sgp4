@@ -31,7 +31,7 @@ Install-Package One_Sgp4
 ```
 
 ### Manually
-Download the latest dll file [here](https://github.com/1manprojects/one_Sgp4/releases) and import it into youre project.
+Download the latest dll file [here](https://github.com/1manprojects/one_Sgp4/releases) and import it into your project.
 
 ## Usage
 A more complete Example can be found in the [OneSGP4_Example Project](https://github.com/1manprojects/one_Sgp4/blob/master/OneSGP4_Example/Program.cs).
@@ -83,7 +83,7 @@ Sgp4Data satellitePos = getSatPositionAtTime(satellite, epoch, wgs);
 
 ### Other Functions
 
-Furthermore it is possible to calculate if a satellite will be visible from the ground at a certain location and time. For this one has to set a location of the observer on earth.
+Furthermore, it is possible to calculate if a satellite will be visible from the ground at a certain location and time. For this one has to set a location of the observer on earth.
 
 Coordinate of an observer on Ground latitude, longitude, height(in meters)
 ```
