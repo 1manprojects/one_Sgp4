@@ -64,6 +64,22 @@ namespace Test
             Assert.That(t.getStartYear(), Is.EqualTo(17));
         }
 
+        [TestCase("1 25544U 98067A   19364.04305556 -.00001219  00000-0 -13621-4 0  9993",
+                  "2 25544  51.6441 110.3812 0005206  82.0414 249.9912 15.49519575205634")]
+        [TestCase("1 25544U 98067A 20316.41516162 .00001589 00000+0 36499-4 0 9995",
+                  "2 25544  51.6454 339.9628 0001882  94.8340 265.2864 15.49409479254842")]
+        [Test]
+        public void TleParseFormate(string line1, string line2)
+        {
+            try
+            {
+                Tle t = ParserTLE.parseTle(line1, line2,"test");
+            } catch
+            {
+                Assert.Fail("Cannot Parse Tle from string");
+            }
+        }
+
         [Test]
         public void TleParseFromCorruptLinesShouldFail()
         {

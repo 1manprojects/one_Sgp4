@@ -72,6 +72,7 @@ namespace One_Sgp4
             double ephemeris;
             int setNumber = 0;
             int checksum1;
+            int count = 0;
 
             //Start Line 1
             //check if data maches Checksumm
@@ -86,175 +87,193 @@ namespace One_Sgp4
             Tle ret;
             try
             {
-                string[] s1 = tleLine1.Split(' ');
-                string[] line1 = new string[9];
-                int count = 0;
-                for (int i = 0; i < s1.Length; i++)
+                try
                 {
-                    if (s1[i].Length > 0)
+                    string[] s1 = tleLine1.Split(' ');
+                    string[] line1 = new string[9];
+                    
+                    for (int i = 0; i < s1.Length; i++)
                     {
-                        line1[count] = s1[i];
-                        count++;
+                        if (s1[i].Length > 0)
+                        {
+                            line1[count] = s1[i];
+                            count++;
+                        }
                     }
-                }
 
-                string sclass = line1[1].Substring(line1[1].Length - 1);
-                if (sclass == "U")
-                {
-                    satCl = 0x0;
-                }
-                if (sclass == "C")
-                {
-                    satCl = 0x1;
-                }
-                if (sclass == "S")
-                {
-                    satCl = 0x2;
-                }
-
-                noradId = line1[1].Remove(line1[1].Length - 1);
-
-                //check if Line contains International Designator Information
-                //if Not then skip setting them
-                int noID = 0;
-                if (count == 8)
-                {
-                    noID = -1;
-                }
-                else
-                {
-                    startYear = Convert.ToInt32(line1[2].Substring(0, 2));
-                    startNumber = Convert.ToInt32(line1[2].Substring(2, 3));
-                    intDes = line1[2].Substring(5);
-                }
-
-                epochYear = Convert.ToInt32(line1[3+noID].Substring(0, 2));
-                string epDay = line1[3 + noID].Substring(2);
-                epochDay = double.Parse(epDay, CultureInfo.GetCultureInfo("en-US"));
-
-                firstMeanMotion = double.Parse(line1[4 + noID], CultureInfo.GetCultureInfo("en-US"));
-
-                int zeros = Convert.ToInt32(line1[5 + noID].Substring(line1[5].Length - 1));
-                line1[5 + noID] = line1[5 + noID].Substring(0, line1[5 + noID].IndexOf('-'));
-                if (line1[5 + noID].Length > 0)
-                {
-                    if (line1[5 + noID][0] == '+' || line1[5 + noID][0] == '-')
+                    string sclass = line1[1].Substring(line1[1].Length - 1);
+                    if (sclass == "U")
                     {
-                        line1[5 + noID] = line1[5 + noID].Insert(1, ".");
-                        for (int i = 0; i < zeros; i++)
-                            line1[5 + noID] = line1[5 + noID].Insert(2, "0");
+                        satCl = 0x0;
+                    }
+                    if (sclass == "C")
+                    {
+                        satCl = 0x1;
+                    }
+                    if (sclass == "S")
+                    {
+                        satCl = 0x2;
+                    }
+
+                    noradId = line1[1].Remove(line1[1].Length - 1);
+
+                    //check if Line contains International Designator Information
+                    //if Not then skip setting them
+                    int noID = 0;
+                    if (count == 8)
+                    {
+                        noID = -1;
                     }
                     else
                     {
-                        line1[5 + noID] = line1[5 + noID].Insert(0, ".");
-                        for (int i = 0; i < zeros; i++)
-                            line1[5 + noID] = line1[5 + noID].Insert(1, "0");
+                        startYear = Convert.ToInt32(line1[2].Substring(0, 2));
+                        startNumber = Convert.ToInt32(line1[2].Substring(2, 3));
+                        intDes = line1[2].Substring(5);
                     }
-                    secondMeanMotion = double.Parse(line1[5 + noID], CultureInfo.GetCultureInfo("en-US"));
-                }
-                else
-                {
-                    secondMeanMotion = 0.0;
-                }
 
-                zeros = Convert.ToInt32(line1[6 + noID].Substring(line1[6 + noID].Length - 1));
-                if (line1[6 + noID][line1[6 + noID].Length - 2] == '-')
-                {
-                    line1[6 + noID] = line1[6 + noID].Substring(0, line1[6 + noID].IndexOf('-'));
-                }
-                else
-                {
-                    line1[6 + noID] = line1[6 + noID].Substring(0, line1[6 + noID].IndexOf('+'));
-                }
-                if (line1[6 + noID].Length > 0)
-                {
-                    if (line1[6 + noID][0] == '+' || line1[6 + noID][0] == '-')
+                    epochYear = Convert.ToInt32(line1[3 + noID].Substring(0, 2));
+                    string epDay = line1[3 + noID].Substring(2);
+                    epochDay = double.Parse(epDay, CultureInfo.GetCultureInfo("en-US"));
+
+                    firstMeanMotion = double.Parse(line1[4 + noID], CultureInfo.GetCultureInfo("en-US"));
+
+                    int zeros = Convert.ToInt32(line1[5 + noID].Substring(line1[5].Length - 1));
+                    if (line1[5 + noID].Equals("00000+0"))
                     {
-                        line1[6 + noID] = line1[6 + noID].Insert(1, ".");
-                        for (int i = 0; i < zeros; i++)
-                            line1[6 + noID] = line1[6 + noID].Insert(2, "0");
+                        line1[5 + noID] = line1[5 + noID].Substring(0, line1[5 + noID].IndexOf('+'));
                     }
                     else
                     {
-                        line1[6 + noID] = line1[6 + noID].Insert(0, ".");
-                        for (int i = 0; i < zeros; i++)
-                            line1[6 + noID] = line1[6 + noID].Insert(1, "0");
+                        line1[5 + noID] = line1[5 + noID].Substring(0, line1[5 + noID].IndexOf('-'));
                     }
-                    dragTerm = double.Parse(line1[6 + noID], CultureInfo.GetCultureInfo("en-US"));
-                }
-                else
+                    if (line1[5 + noID].Length > 0)
+                    {
+                        if (line1[5 + noID][0] == '+' || line1[5 + noID][0] == '-')
+                        {
+                            line1[5 + noID] = line1[5 + noID].Insert(1, ".");
+                            for (int i = 0; i < zeros; i++)
+                                line1[5 + noID] = line1[5 + noID].Insert(2, "0");
+                        }
+                        else
+                        {
+                            line1[5 + noID] = line1[5 + noID].Insert(0, ".");
+                            for (int i = 0; i < zeros; i++)
+                                line1[5 + noID] = line1[5 + noID].Insert(1, "0");
+                        }
+                        secondMeanMotion = double.Parse(line1[5 + noID], CultureInfo.GetCultureInfo("en-US"));
+                    }
+                    else
+                    {
+                        secondMeanMotion = 0.0;
+                    }
+
+                    zeros = Convert.ToInt32(line1[6 + noID].Substring(line1[6 + noID].Length - 1));
+                    if (line1[6 + noID][line1[6 + noID].Length - 2] == '-')
+                    {
+                        line1[6 + noID] = line1[6 + noID].Substring(0, line1[6 + noID].IndexOf('-'));
+                    }
+                    else
+                    {
+                        line1[6 + noID] = line1[6 + noID].Substring(0, line1[6 + noID].IndexOf('+'));
+                    }
+                    if (line1[6 + noID].Length > 0)
+                    {
+                        if (line1[6 + noID][0] == '+' || line1[6 + noID][0] == '-')
+                        {
+                            line1[6 + noID] = line1[6 + noID].Insert(1, ".");
+                            for (int i = 0; i < zeros; i++)
+                                line1[6 + noID] = line1[6 + noID].Insert(2, "0");
+                        }
+                        else
+                        {
+                            line1[6 + noID] = line1[6 + noID].Insert(0, ".");
+                            for (int i = 0; i < zeros; i++)
+                                line1[6 + noID] = line1[6 + noID].Insert(1, "0");
+                        }
+                        dragTerm = double.Parse(line1[6 + noID], CultureInfo.GetCultureInfo("en-US"));
+                    }
+                    else
+                    {
+                        dragTerm = 0.0;
+                    }
+
+                    ephemeris = double.Parse(line1[7 + noID], CultureInfo.GetCultureInfo("en-US"));
+
+                    //check if Element Setnumber is included in TLE line
+                    //if not then there is only Checksum here
+                    if (line1[8 + noID].Length > 1)
+                    {
+                        setNumber = Convert.ToInt32(line1[8 + noID].Substring(0, line1[8 + noID].Length - 1));
+                        checksum1 = Convert.ToInt32(line1[8 + noID].Substring(line1[8 + noID].Length - 1));
+                    }
+                    else
+                    {
+                        checksum1 = Convert.ToInt32(line1[8 + noID]);
+                    }
+                } catch (Exception ex)
                 {
-                    dragTerm = 0.0;
+                    throw new InvalidDataException("Could not parse Line 1.", ex);
                 }
 
-                ephemeris = double.Parse(line1[7 + noID], CultureInfo.GetCultureInfo("en-US"));
-
-                //check if Element Setnumber is included in TLE line
-                //if not then there is only Checksum here
-                if (line1[8 + noID].Length > 1)
-                {
-                    setNumber = Convert.ToInt32(line1[8 + noID].Substring(0, line1[8 + noID].Length - 1));
-                    checksum1 = Convert.ToInt32(line1[8 + noID].Substring(line1[8 + noID].Length - 1));
-                }
-                else
-                {
-                    checksum1 = Convert.ToInt32(line1[8 + noID]);
-                }
-
-                int satNumber;
-                double inclination;
-                double rightAscension;
-                double eccentricity;
-                double perigee;
-                double meanAnomoly;
-                double meanMotion;
+                int satNumber = 0;
+                double inclination = 0;
+                double rightAscension = 0;
+                double eccentricity = 0;
+                double perigee = 0;
+                double meanAnomoly = 0;
+                double meanMotion = 0;
                 double relevationNumber = 0;
                 int checksum2 = 0;
 
                 //Start Line2 
-
-                string[] s2 = tleLine2.Split(' ');
-                string[] line2 = new string[9];
-                count = 0;
-                for (int i = 0; i < s2.Length; i++)
+                try
                 {
-                    if (s2[i].Length > 0)
+                    string[] s2 = tleLine2.Split(' ');
+                    string[] line2 = new string[9];
+                    count = 0;
+                    for (int i = 0; i < s2.Length; i++)
                     {
-                        line2[count] = s2[i];
-                        count++;
+                        if (s2[i].Length > 0)
+                        {
+                            line2[count] = s2[i];
+                            count++;
+                        }
                     }
-                }
 
-                satNumber = Convert.ToInt32(line2[1]);
-                inclination = double.Parse(line2[2], CultureInfo.GetCultureInfo("en-US"));
-                rightAscension = double.Parse(line2[3], CultureInfo.GetCultureInfo("en-US"));
-                line2[4] = line2[4].Insert(0, ".");
-                eccentricity = double.Parse(line2[4], CultureInfo.GetCultureInfo("en-US"));
-                perigee = double.Parse(line2[5], CultureInfo.GetCultureInfo("en-US"));
-                meanAnomoly = double.Parse(line2[6], CultureInfo.GetCultureInfo("en-US"));
-                if (line2[8] != null )
-                {
-                    meanMotion = double.Parse(line2[7], CultureInfo.GetCultureInfo("en-US"));
-                    checksum2 = Convert.ToInt32(line2[8].Substring(line2[8].Length - 1));
-                    relevationNumber = double.Parse(line2[8].Substring(0, line2[8].Length - 1),
-                        CultureInfo.GetCultureInfo("en-US"));
-                }
-                else
-                {
-                    checksum2 = Convert.ToInt32(line2[7].Substring(line2[7].Length - 1));
-                    meanMotion = double.Parse(line2[7].Substring(0, 11),
-                        CultureInfo.GetCultureInfo("en-US"));
-                    relevationNumber = double.Parse(line2[7].Substring(11, 5),
-                        CultureInfo.GetCultureInfo("en-US"));
-                }
+                    satNumber = Convert.ToInt32(line2[1]);
+                    inclination = double.Parse(line2[2], CultureInfo.GetCultureInfo("en-US"));
+                    rightAscension = double.Parse(line2[3], CultureInfo.GetCultureInfo("en-US"));
+                    line2[4] = line2[4].Insert(0, ".");
+                    eccentricity = double.Parse(line2[4], CultureInfo.GetCultureInfo("en-US"));
+                    perigee = double.Parse(line2[5], CultureInfo.GetCultureInfo("en-US"));
+                    meanAnomoly = double.Parse(line2[6], CultureInfo.GetCultureInfo("en-US"));
+                    if (line2[8] != null)
+                    {
+                        meanMotion = double.Parse(line2[7], CultureInfo.GetCultureInfo("en-US"));
+                        checksum2 = Convert.ToInt32(line2[8].Substring(line2[8].Length - 1));
+                        relevationNumber = double.Parse(line2[8].Substring(0, line2[8].Length - 1),
+                            CultureInfo.GetCultureInfo("en-US"));
+                    }
+                    else
+                    {
+                        checksum2 = Convert.ToInt32(line2[7].Substring(line2[7].Length - 1));
+                        meanMotion = double.Parse(line2[7].Substring(0, 11),
+                            CultureInfo.GetCultureInfo("en-US"));
+                        relevationNumber = double.Parse(line2[7].Substring(11, 5),
+                            CultureInfo.GetCultureInfo("en-US"));
+                    }
 
-                if (tleName == null)
+                    if (tleName == null)
+                    {
+                        tleName = startYear.ToString() + startNumber.ToString() + intDes;
+                    }
+                    if (tleName[0] == '0' && tleName[1] == ' ')
+                    {
+                        tleName = tleName.Remove(0, 2);
+                    }
+                } catch (Exception ex)
                 {
-                    tleName = startYear.ToString() + startNumber.ToString() + intDes;
-                }
-                if (tleName[0] == '0' && tleName[1] == ' ')
-                {
-                    tleName = tleName.Remove(0, 2);
+                    throw new InvalidDataException("Could not parse Line 2.", ex);
                 }
 
                 ret = new Tle(tleName, noradId, (Enum.satClass)satCl, startYear, startNumber, intDes,
