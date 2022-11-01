@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "One_Sgp4", "One_Sgp4\One_Sg
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneSGP4_Example", "OneSGP4_Example\OneSGP4_Example.csproj", "{A72A6FA5-8ACB-4429-90D7-98FFF5EE6FA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{427A8C67-F7B6-4831-A459-FD7F21DB811A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{427A8C67-F7B6-4831-A459-FD7F21DB811A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

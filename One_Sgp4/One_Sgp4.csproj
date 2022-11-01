@@ -18,13 +18,13 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;netstandard2.0;net40;net45</TargetFrameworks>
-    <Version>1.0.13</Version>
-    <PackageReleaseNotes>Fixed Parse error wen Parsing TLE data with DragTerm of 0000+0 format</PackageReleaseNotes>
-    <AssemblyVersion>1.0.13.0</AssemblyVersion>
+    <TargetFrameworks>netstandard2.1;netstandard2.0;net40;net45;net6.0;net5.0</TargetFrameworks>
+    <Version>1.0.14</Version>
+    <PackageReleaseNotes>Added .net 5 and .net 6 builds</PackageReleaseNotes>
+    <AssemblyVersion>1.0.14.0</AssemblyVersion>
     <PackageLicenseExpression />
     <PackageLicenseFile>license.txt</PackageLicenseFile>
-    <FileVersion>1.0.13.0</FileVersion>
+    <FileVersion>1.0.14.0</FileVersion>
     <Product>One_Sgp4</Product>
     <PackageId>One_Sgp4</PackageId>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
