@@ -18,7 +18,7 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;netstandard2.0;net40;net45;net6.0;net5.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;netstandard2.0;net6.0;net5.0;net48;netcoreapp3.1</TargetFrameworks>
     <Version>1.0.14</Version>
     <PackageReleaseNotes>Added .net 5 and .net 6 builds</PackageReleaseNotes>
     <AssemblyVersion>1.0.14.0</AssemblyVersion>
