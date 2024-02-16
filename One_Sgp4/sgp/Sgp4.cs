@@ -16,6 +16,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
+using One_Sgp4.omm;
 using System;
 using System.Collections.Generic;
 
@@ -29,8 +30,7 @@ namespace One_Sgp4
   * This class defnies the GeoCoordinates of Latetude, Longitude, hight and the
   * conversions to Earth Centerd Inertial.
   */
-
-        private Tle tleElementData; //!< Tle tleElementData to calculate orbit from 
+        private string dataName = "";
         private Sgp4Rec satCalcData; //!< Sgp4Rec satCalcData stores the results
 
         private double ainv = 0.0;
@@ -103,6 +103,77 @@ namespace One_Sgp4
 
         //! SGP4 constructor.
         /*!
+        \param OMM (Orbit Mean-Elements Message) Data
+        \param int GravConst 0 = WGS72, 1 = WGS82
+        initializes the Orbit-Calculation model
+        */
+        public Sgp4(Omm data, wgsConstant wgs)
+        {
+            setGrav(wgs);
+
+            dataName = data.getName();
+            satCalcData = new Sgp4Rec();
+
+            resultOrbitData = new List<Sgp4Data>();
+
+            //Load TLE Data in sg4Rec Class for calculation
+            satCalcData.rec_satnum = data.getElementSet();
+            satCalcData.rec_epochyr = data.getEpochTime().getYear();
+            satCalcData.rec_epochdays = data.getEpochTime().getEpoch();
+            satCalcData.rec_bstar = data.getDragTerm();
+            satCalcData.rec_inclo = data.getInclination();
+            satCalcData.rec_omegao = data.getAscendingNode();
+            satCalcData.rec_ecco = data.getEccentricity();
+            satCalcData.rec_argpo = data.getPareicenter();
+            satCalcData.rec_mo = data.getMeanAnomoly();
+            satCalcData.rec_no = data.getMeanMotion();
+
+            satCalcData.rec_no = satCalcData.rec_no / xpdotp;
+
+            satCalcData.rec_a = Math.Pow(satCalcData.rec_no * tumin, (-2.0 / 3.0));
+            satCalcData.rec_ndot = satCalcData.rec_ndot / (xpdotp * 1440.0);
+            satCalcData.rec_nddot = satCalcData.rec_nddot / (xpdotp * 1440.0 * 1440);
+
+            satCalcData.rec_inclo = satCalcData.rec_inclo / rad;
+            satCalcData.rec_omegao = satCalcData.rec_omegao / rad;
+            satCalcData.rec_argpo = satCalcData.rec_argpo / rad;
+            satCalcData.rec_mo = satCalcData.rec_mo / rad;
+
+            //Initalize newton rhapson iteration
+            newtonm(satCalcData.rec_ecco, satCalcData.rec_mo, e1, nuo);
+
+            satCalcData.rec_alta = satCalcData.rec_a *
+                (1.0 + satCalcData.rec_ecco * satCalcData.rec_ecco) - 1.0;
+            satCalcData.rec_altp = satCalcData.rec_a *
+                (1.0 - satCalcData.rec_ecco * satCalcData.rec_ecco) - 1.0;
+
+            //check Yeahr to find the the right Date
+            //Currently will only work until 2058
+            //Currently oldest man made object Vangard1 Launched 1958
+            if (satCalcData.rec_epochyr < 58)
+                year = satCalcData.rec_epochyr + 2000;
+            else
+                year = satCalcData.rec_epochyr + 1900;
+
+            // Epoch time
+            satCalcData.rec_eptime = (year - 1950) * 365 + (year - 1949) / 4
+                    + satCalcData.rec_epochdays;
+
+            EpochTime satTime = new EpochTime(satCalcData.rec_epochyr,
+                satCalcData.rec_epochdays);
+
+            satCalcData.rec_mjdsatepoch = satTime.toJulianDate();
+            satCalcData.rec_mjdsatepoch = satCalcData.rec_mjdsatepoch - 2400000.5;
+
+            satCalcData.rec_init = 1;
+            satCalcData.neo.neo_t = 0.0;
+
+            sgp4Init(satCalcData.rec_satnum, year, satCalcData.rec_mjdsatepoch - 33281.0);
+        }
+
+
+        //! SGP4 constructor.
+        /*!
         \param tle Two Line Elements
         \param int GravConst 0 = WGS72, 1 = WGS82
         initializes the Orbit-Calculation model
@@ -111,7 +182,7 @@ namespace One_Sgp4
         {
             setGrav(wgs);
 
-            tleElementData = data;
+            dataName = data.getName();
             satCalcData = new Sgp4Rec();
 
             resultOrbitData = new List<Sgp4Data>();
@@ -196,7 +267,7 @@ namespace One_Sgp4
         {
             resultOrbitData.Clear();
             resultOrbitData = null;
-            tleElementData = null;
+            dataName = "";
             satCalcData.dso = null;
             satCalcData.neo = null;
             satCalcData = null;
@@ -365,7 +436,7 @@ namespace One_Sgp4
 	        if (nm <= 0.0)
 	        {
                 satCalcData.rec_error = 2;
-                throw new System.ArgumentException(tleElementData.getName() + " -MeanMotion is zero or less", "Sgp4Calculation");
+                throw new System.ArgumentException(dataName + " -MeanMotion is zero or less", "Sgp4Calculation");
 		        // throw an exception only if this is a fatal condition
 		        // which may result in a divide by zero error, otherwise
 		        // try and recover
@@ -380,7 +451,7 @@ namespace One_Sgp4
 	        if ((em >= 1.0) || (em < -0.001) || (am < 0.95))
 	        {
                 satCalcData.rec_error = 1;
-                throw new System.ArgumentException(tleElementData.getName() + " -Eccentricity is out of bounds", "Sgp4Calculation");
+                throw new System.ArgumentException(dataName + " -Eccentricity is out of bounds", "Sgp4Calculation");
 	        }
 	        // If it is less than zero, try and correct by making eccentricity a
 	        // small value
@@ -437,7 +508,7 @@ namespace One_Sgp4
 		        if ((satCalcData.rec_ep < 0.0) || (satCalcData.rec_ep > 1.0))
 		        {
                     satCalcData.rec_error = 1;
-                    throw new System.ArgumentException(tleElementData.getName() + " -Eccentricity is out of bounds", "Sgp4Calculation");
+                    throw new System.ArgumentException(dataName + " -Eccentricity is out of bounds", "Sgp4Calculation");
 		        }
 	        }
 
@@ -481,7 +552,7 @@ namespace One_Sgp4
 	        if (pl < 0.0) 
 	        {
                 satCalcData.rec_error = 4;
-                throw new System.InvalidOperationException(tleElementData.getName() + " -No data could be generated");
+                throw new System.InvalidOperationException(dataName + " -No data could be generated");
 		        // This error results in no data generated
 	        }
 	        else 

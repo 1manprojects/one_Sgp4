@@ -30,7 +30,8 @@ namespace One_Sgp4
         {
             UNCLASSIFIED = 0, //!< int 0 unclassified satellite 
             CLASSIFIED = 1, //!< int 1 classified satellite
-            SECRET = 2 //!< int 2 secret satellite
+            SECRET = 2, //!< int 2 secret satellite
+            UNKOWN = 3
         };
     }
 }

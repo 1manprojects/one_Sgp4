@@ -4,7 +4,7 @@
 
 ## Introduction
 
-This library calculates the orbits of satellites via TLEs data. Other functions for coordination transformation, time calculations, and the calculation of contact windows depending on the observer's coordinates on earth are also available.
+This library calculates the orbits of satellites via TLEs data and the newer Orbit Mean-Elements Message (OMM). Other functions for coordination transformation, time calculations, and the calculation of contact windows depending on the observer's coordinates on earth are also available.
 
 This library was created since I could not find a c# library with the necessary functions that I required. The calculations for the orbit propagations are based on the [SpaceTrack Report 3](https://celestrak.com/NORAD/documentation/spacetrk.pdf). Other Calculations for Time and coordination transformations were taken from [Dr. T.S. Kelso website](http://celestrak.com/columns/).
 
@@ -54,6 +54,17 @@ Tle tleItem = ParserTLE.parseTle(
 or one can give a txt-file containing a large list of TLE-Data
 ```
 List<Tle> tleList = ParserTLE.ParseFile("PATH_TO_TLE.txt");
+```
+
+Parsing OMM data
+```
+string ommPath = "path/to/omm.xml";
+XmlDocument doc = new XmlDocument();
+doc.Load(ommPath);
+List<Omm> OmmList = ParserOMM.Parse(doc);
+
+//Calculate Satellite Position and Speed
+One_Sgp4.Sgp4 sgp4Propagator = new Sgp4(OmmList[0], Sgp4.wgsConstant.WGS_84);
 ```
 
 To calculate the Orbit positiont of the object in question the start and stop times need to be defined. These Epoch Times should be given in UTC-Time. 
