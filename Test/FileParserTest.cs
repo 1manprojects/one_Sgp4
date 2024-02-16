@@ -10,7 +10,7 @@ namespace Test
         [Test]
         public void test2LineFile()
         {
-            string testpath = TestContext.CurrentContext.TestDirectory + @"\sat42784_1.txt";
+            string testpath = TestContext.CurrentContext.TestDirectory + @"\resources\sat42784_1.txt";
             var list = ParserTLE.ParseFile(testpath, "Pegasus");
 
             Assert.That(list.Count(), Is.EqualTo(3));
@@ -24,7 +24,7 @@ namespace Test
         [Test]
         public void test3LineFile()
         {
-            string testpath = TestContext.CurrentContext.TestDirectory + @"\somesats.txt";
+            string testpath = TestContext.CurrentContext.TestDirectory + @"\resources\somesats.txt";
             var list = ParserTLE.ParseFile(testpath);
 
             Assert.That(list.Count(), Is.EqualTo(3));

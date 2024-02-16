@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Globalization;
 using NUnit.Framework;
 using One_Sgp4;
+using One_Sgp4.omm;
 
 namespace Test
 {
@@ -108,6 +110,20 @@ namespace Test
             EpochTime epoch = new EpochTime(hh, mm, ss, yyyy, MM, dd);
             epoch.addTick(ticksToAdd);
             Assert.AreEqual(result, epoch.ToString());
+        }
+
+        [TestCase("2024-01-14T05:40:41.655072", "24014.23659323")]
+        public void TestParseForOMMFormatString(string ommInput, string tleInput)
+        {
+            int epochYear = Convert.ToInt32(tleInput.Substring(0, 2));
+            string epDay = tleInput.Substring(2);
+            double epochDay = double.Parse(epDay, CultureInfo.GetCultureInfo("en-US"));
+            EpochTime epochTle = new EpochTime(epochYear, epochDay);
+
+            EpochTime epochOmm = ParserOMM.parseOmmEpoch(ommInput, true);
+
+            Assert.AreEqual(epochTle.ToString(), epochOmm.ToString());
+            Assert.AreEqual(epochTle.getEpoch(), epochOmm.getEpoch(), 0.0000001);
         }
     }
 }

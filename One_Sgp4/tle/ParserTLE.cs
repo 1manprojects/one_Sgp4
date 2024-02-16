@@ -58,7 +58,7 @@ namespace One_Sgp4
         public static Tle parseTle(string tleLine1, string tleLine2,
             string tleName = null)
         {
-            int satCl = 0;
+            string satCl = "";
             string noradId;
             int startYear = 0;
             int startNumber = 0;
@@ -101,19 +101,7 @@ namespace One_Sgp4
                         }
                     }
 
-                    string sclass = line1[1].Substring(line1[1].Length - 1);
-                    if (sclass == "U")
-                    {
-                        satCl = 0x0;
-                    }
-                    if (sclass == "C")
-                    {
-                        satCl = 0x1;
-                    }
-                    if (sclass == "S")
-                    {
-                        satCl = 0x2;
-                    }
+                    satCl = line1[1].Substring(line1[1].Length - 1);
 
                     noradId = line1[1].Remove(line1[1].Length - 1);
 
@@ -276,7 +264,7 @@ namespace One_Sgp4
                     throw new InvalidDataException("Could not parse Line 2.", ex);
                 }
 
-                ret = new Tle(tleName, noradId, (Enum.satClass)satCl, startYear, startNumber, intDes,
+                ret = new Tle(tleName, noradId, parseClassification(satCl), startYear, startNumber, intDes,
                 epochYear, epochDay, firstMeanMotion, secondMeanMotion, dragTerm,
                 ephemeris, setNumber, checksum1, satNumber, inclination, rightAscension,
                 eccentricity, perigee, meanAnomoly, meanMotion, relevationNumber, checksum2);
@@ -359,6 +347,26 @@ namespace One_Sgp4
                 return true;
             else
                 return false;
+        }
+
+        public static Enum.satClass parseClassification(string value)
+        {
+            if (value == "U")
+            {
+                return Enum.satClass.UNCLASSIFIED;
+            }
+            else if (value == "C")
+            {
+                return Enum.satClass.CLASSIFIED;
+            }
+            else if (value == "S")
+            {
+                return Enum.satClass.SECRET;
+            }
+            else
+            {
+                return Enum.satClass.UNKOWN;
+            }
         }
     }
 }

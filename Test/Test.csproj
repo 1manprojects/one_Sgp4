@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -9,13 +9,21 @@
   <ItemGroup>
     <None Remove="sat42784_1.txt" />
     <None Remove="somesats.txt" />
+    <None Remove="omm.xml" />
+    <None Remove="singleOmm.xml" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="sat42784_1.txt">
+    <Content Include="resources\sat42784_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="somesats.txt">
+    <Content Include="resources\somesats.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\singleOmm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\omm.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

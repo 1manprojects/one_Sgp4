@@ -8,6 +8,20 @@ namespace OneSGP4_Example
     {
         static void Main(string[] args)
         {
+            /* 
+             * Parse OMM (Orbit Mean-Elements Message)
+             * 
+                string testpath = "path/to/omm.xml";
+                Parse OMM (Orbit Mean-Elements Message)
+                XmlDocument doc = new XmlDocument();
+                doc.Load(testpath);
+                List<Omm> OmmList = ParserOMM.Parse(doc);
+
+            Calculate Satellite Position and Speed
+
+                One_Sgp4.Sgp4 sgp4Propagator = new Sgp4(OmmList[0], Sgp4.wgsConstant.WGS_84);
+            */
+
             //Parse three line element
             Tle tleISS = ParserTLE.parseTle(
                 "1 25544U 98067A   19364.04305556 -.00001219  00000-0 -13621-4 0  9993",

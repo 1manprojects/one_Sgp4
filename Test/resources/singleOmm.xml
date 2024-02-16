@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ndm xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://sanaregistry.org/r/ndmxml_unqualified/ndmxml-2.0.0-master-2.0.xsd">
+  <omm id="CCSDS_OMM_VERS" version="2.0">
+    <header>
+      <CREATION_DATE/>
+      <ORIGINATOR/>
+    </header>
+    <body>
+      <segment>
+        <metadata>
+          <OBJECT_NAME>ISS (ZARYA)</OBJECT_NAME>
+          <OBJECT_ID>1998-067A</OBJECT_ID>
+          <CENTER_NAME>EARTH</CENTER_NAME>
+          <REF_FRAME>TEME</REF_FRAME>
+          <TIME_SYSTEM>UTC</TIME_SYSTEM>
+          <MEAN_ELEMENT_THEORY>SGP4</MEAN_ELEMENT_THEORY>
+        </metadata>
+        <data>
+          <meanElements>
+            <EPOCH>2024-01-14T05:40:41.655072</EPOCH>
+            <MEAN_MOTION>15.49370626</MEAN_MOTION>
+            <ECCENTRICITY>.0004916</ECCENTRICITY>
+            <INCLINATION>51.6428</INCLINATION>
+            <RA_OF_ASC_NODE>3.1154</RA_OF_ASC_NODE>
+            <ARG_OF_PERICENTER>89.2408</ARG_OF_PERICENTER>
+            <MEAN_ANOMALY>12.3067</MEAN_ANOMALY>
+          </meanElements>
+          <tleParameters>
+            <EPHEMERIS_TYPE>0</EPHEMERIS_TYPE>
+            <CLASSIFICATION_TYPE>U</CLASSIFICATION_TYPE>
+            <NORAD_CAT_ID>25544</NORAD_CAT_ID>
+            <ELEMENT_SET_NO>999</ELEMENT_SET_NO>
+            <REV_AT_EPOCH>43452</REV_AT_EPOCH>
+            <BSTAR>.26444E-3</BSTAR>
+            <MEAN_MOTION_DOT>.14338E-3</MEAN_MOTION_DOT>
+            <MEAN_MOTION_DDOT>0</MEAN_MOTION_DDOT>
+          </tleParameters>
+        </data>
+      </segment>
+    </body>
+  </omm>
+</ndm>
