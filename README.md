@@ -85,7 +85,7 @@ The calculation are then done using the SGP4 class with the TLE-data and the WGS
 One_Sgp4.Sgp4 sgp4Propagator = new Sgp4(tleItem, Int<WGSCONSTANT>);
 sgp4Propagator.runSgp4Cal(startTime, stopTime, Double<calculation step in minutes>);
 List<One_Sgp4.Sgp4Data> resultDataList = new List<Sgp4Data>();
-resultDataList = sgp4Propagator.getRestults();
+resultDataList = sgp4Propagator.getResults();
 ```
 It is also possible to calculate the position of the Satellite at a single timepoint
 ```
